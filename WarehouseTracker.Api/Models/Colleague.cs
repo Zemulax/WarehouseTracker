@@ -1,14 +1,12 @@
-﻿namespace WarehouseTracker.Domain
+﻿namespace WarehouseTracker.Api.Models
 {
     /// <summary>
-    /// This is the Colleague entity representing a colleague in the warehouse tracking system.
+    /// Represents the shape of an incoming request to register a new colleague
     /// </summary>
     public class Colleague
     {
-        public string ColleagueId { get; set; } = string.Empty;
+        public String EmployeeId { get; set; } = string.Empty;
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
-
-
     }
 }

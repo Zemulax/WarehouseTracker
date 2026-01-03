@@ -1,4 +1,8 @@
 
+using Microsoft.EntityFrameworkCore;
+using WarehouseTracker.Application;
+using WarehouseTracker.Infrastructure;
+
 namespace WarehouseTracker.Api
 {
     public class Program
@@ -13,6 +17,9 @@ namespace WarehouseTracker.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.AddScoped<IColleagueService, ColleagueService>();
 
             var app = builder.Build();
 

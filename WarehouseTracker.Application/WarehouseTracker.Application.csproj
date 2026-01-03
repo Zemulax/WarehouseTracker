@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WarehouseTracker.Domain\WarehouseTracker.Domain.csproj" />
+    <ProjectReference Include="..\WarehouseTracker.Infrastructure\WarehouseTracker.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
