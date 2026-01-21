@@ -362,3 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /WarehouseTracker.Api/appsettings.json
+/WarehouseTracker.Infrastructure/Migrations/20260121214458_WarehouseTrackerDbmg.Designer.cs
+/WarehouseTracker.Infrastructure/Migrations/WarehouseTrackerDbContextModelSnapshot.cs
+/WarehouseTracker.Infrastructure/Migrations/20260121214458_WarehouseTrackerDbmg.cs

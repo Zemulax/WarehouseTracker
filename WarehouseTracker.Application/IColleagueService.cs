@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using WarehouseTracker.Domain;
 namespace WarehouseTracker.Application
 {
     /// <summary>
@@ -13,6 +13,34 @@ namespace WarehouseTracker.Application
     /// of an onboarding or personnel management workflow.</remarks>
     public interface IColleagueService
     {
-        Task RegisterColleagueAsync(string employeeId, string firstName, string lastName);
+        Task RegisterColleagueAsync(
+            int Id,
+            string employeeId, 
+            string firstName, 
+            string lastName,
+            string role,
+            bool isActive );
+
+        Task<List<Colleague>> RetrieveColleagueAsync();
+
+        Task<List<Colleague>> RetrieveColleagueByAttribute(
+
+            int? Id,
+            string? employeeId,
+            string? firstName,
+            string? lastName,
+            string? role,
+            bool? isActive
+            );
+
+        Task DeleteColleagueAsync(string employeeId);
+        Task UpdateColleagueAsync(
+            string employeeId,
+            string? firstName,
+            string? lastName,
+            string? role,
+            bool? isActive);
     }
+
+
 }
