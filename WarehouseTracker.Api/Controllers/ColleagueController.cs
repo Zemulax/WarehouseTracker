@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using WarehouseTracker.Api.Models;
 using WarehouseTracker.Application;
 

@@ -1,7 +1,7 @@
-
 using Microsoft.EntityFrameworkCore;
 using WarehouseTracker.Application;
 using WarehouseTracker.Infrastructure;
+using System.Text.Json.Serialization; // Add this using directive
 
 namespace WarehouseTracker.Api
 {
@@ -14,12 +14,16 @@ namespace WarehouseTracker.Api
             // Add services to the container.
 
             builder.Services.AddControllers();
+            
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddScoped<IColleagueService, ColleagueService>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IShiftAssignmentService, ShiftAssignmentService>();
+            builder.Services.AddScoped<IBreakRuleService, BreakRuleService>();
 
             var app = builder.Build();
 
