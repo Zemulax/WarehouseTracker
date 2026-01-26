@@ -21,5 +21,7 @@ namespace WarehouseTracker.Infrastructure
         public DbSet<Domain.ShiftAssignment> ShiftAssignments { get; set; } = null!;
 
         public DbSet<Domain.BreakRule> BreakRules { get; set; } = null!;
+
+        public DbSet<Domain.Event> Events { get; set; } = null!;
     }
 }
