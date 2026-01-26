@@ -17,11 +17,9 @@ namespace WarehouseTracker.Infrastructure
 
         public DbSet<Domain.Colleague> Colleagues { get; set; } = null!;
         public DbSet<Domain.Department> Departments { get; set; } = null!;
-
         public DbSet<Domain.ShiftAssignment> ShiftAssignments { get; set; } = null!;
-
         public DbSet<Domain.BreakRule> BreakRules { get; set; } = null!;
-
         public DbSet<Domain.Event> Events { get; set; } = null!;
+        public DbSet<Domain.ActivitySession> ActivitySessions { get; set; } = null!;
     }
 }
