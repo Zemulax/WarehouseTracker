@@ -48,7 +48,7 @@ namespace WarehouseTracker.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var breakRules = await _breakRuleService.GetBreakRuleAsync();
+            var breakRules = await _breakRuleService.GetBreakRulesAsync();
             return Ok(breakRules);
         }
 

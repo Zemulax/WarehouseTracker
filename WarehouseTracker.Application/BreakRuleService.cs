@@ -17,21 +17,19 @@ namespace WarehouseTracker.Application
             _dbContext = dbContext;
         }
 
-        public async Task<BreakRule?> GetBreakRuleAsync()
-        {
-            // Use async database call and return the result
-            return await _dbContext.BreakRules.FirstOrDefaultAsync();
-        }
-
         public async Task<BreakRule?> GetBreakRuleByTypeAsync(string breakType)
         {
             return await _dbContext.BreakRules.FirstOrDefaultAsync(b => b.BreakType == breakType);
         }
 
+        public async Task<List<BreakRule>> GetBreakRulesAsync()
+        {
+            return await _dbContext.BreakRules.ToListAsync();
+        }
+
         public async Task<bool> SetBreakRule(string BreakType, TimeOnly breakstart, TimeOnly breakend)
         {
             var existingbreakrule = await GetBreakRuleByTypeAsync(BreakType);
-            Console.WriteLine($"here: {existingbreakrule}");
             if(existingbreakrule == null)
             {
                 var breakRuleEntity = new BreakRule
