@@ -10,5 +10,7 @@ namespace WarehouseTracker.Api.Models
         public string EventType { get; set; } = null!;
         public int DepartmentId { get; set; }
         public string Source { get; set; } = null!;
+
+        public int ShiftAssignmentId { get; set; }
     }
 }

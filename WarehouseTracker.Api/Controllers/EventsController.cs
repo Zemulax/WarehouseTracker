@@ -31,7 +31,8 @@ namespace WarehouseTracker.Api.Controllers
                 request.ColleagueId,
                 request.DepartmentId,
                 request.Timestamp,
-                request.Source
+                request.Source,
+                request.ShiftAssignmentId
                 );
             return Ok($"Event {request.EventType} created successfully.");
         }
@@ -62,12 +63,14 @@ namespace WarehouseTracker.Api.Controllers
                 return BadRequest(ModelState);
             }
             var events = await _eventService.RetrieveEventsByAttribute(
-                id,
+                
                 colleagueId,
                 timestamp,
                 eventType,
                 departmentId,
-                source
+                source,
+                departmentId
+
                 );
             return Ok(events);
         }

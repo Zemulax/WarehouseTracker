@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string BreakType { get; set; } = null!;
-        public TimeOnly BreakStart { get; set; }
-        public TimeOnly BreakEnd { get; set; }
+        public int StartAfterMinutes { get; set; }
+        public int DurationMinutes { get; set; }
     }
 }

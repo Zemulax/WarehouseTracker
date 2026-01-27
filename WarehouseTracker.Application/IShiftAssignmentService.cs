@@ -18,12 +18,15 @@ namespace WarehouseTracker.Application
             TimeOnly shiftEnd
             );
         Task<List<ShiftAssignment>> RetrieveShiftAssignmentsAsync();
-        Task<List<ShiftAssignment>> RetrieveShiftAssignmentsByAttribute(
+        Task<ShiftAssignment> RetrieveShiftAssignmentsByAttribute(
             int? Id,
             string? employeeId,
             DateTime? shiftStart,
             DateTime? shiftEnd,
-            string? shiftType);
+            string? shiftType
+            );
+
+        
 
     }
 }

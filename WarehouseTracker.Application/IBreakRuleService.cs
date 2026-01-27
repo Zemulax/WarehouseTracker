@@ -9,7 +9,7 @@ namespace WarehouseTracker.Application
 {
     public interface IBreakRuleService
     {
-        Task<bool> SetBreakRule(string BreakType, TimeOnly breakstart, TimeOnly breakEnd);
+        Task<bool> SetBreakRule(string BreakType, int startAfterMinutes, int durationMinutes);
 
         Task UpdateBreakRule(BreakRule newBreakRule);
 

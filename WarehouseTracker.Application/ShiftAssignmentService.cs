@@ -43,7 +43,7 @@ namespace WarehouseTracker.Application
 
         }
 
-        public async Task<List<ShiftAssignment>> RetrieveShiftAssignmentsByAttribute(int? Id, string? employeeId, 
+        public async Task<ShiftAssignment> RetrieveShiftAssignmentsByAttribute(int? Id, string? employeeId, 
             DateTime? shiftStart, DateTime? shiftEnd, string? shiftType)
         {
             var query = _dbContext.ShiftAssignments.AsQueryable();
@@ -69,7 +69,14 @@ namespace WarehouseTracker.Application
                 var endTimeOnly = TimeOnly.FromDateTime(shiftEnd.Value);
                 query = query.Where(sa => sa.ShiftEnd <= endTimeOnly);
             }
-            return await query.ToListAsync();
+            
+            var result = await query.FirstOrDefaultAsync();
+
+            if (result == null)
+            {
+                throw new KeyNotFoundException("No matching shift assignment found.");
+            }
+            return result;
         }
     }
 }

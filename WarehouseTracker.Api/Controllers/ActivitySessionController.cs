@@ -23,13 +23,12 @@ namespace WarehouseTracker.Api.Controllers
                 return BadRequest(ModelState);
             }
             await _activitySessionService.StartSessionAsync(
-                request.Id,
+                
                 request.ColleagueId,
                 request.DepartmentId,
                 request.ShiftAssignmentId,
                 request.SessionType,
-                request.SessionStart,
-                request.SessionEnd
+                request.SessionStart
                 );
             return Ok("Activity session logged successfully.");
         }
@@ -47,7 +46,6 @@ namespace WarehouseTracker.Api.Controllers
 
         [HttpGet("search")]
         public async Task<IActionResult> RetrieveActivitySessionsByAttribute(
-            [FromQuery] int? id = null,
             [FromQuery] int? colleagueId = null,
             [FromQuery] int? departmentId = null,
             [FromQuery] int? shiftAssignmentId = null,
@@ -62,7 +60,7 @@ namespace WarehouseTracker.Api.Controllers
                 return BadRequest(ModelState);
             }
             var activitySessions = await _activitySessionService.RetrieveActivitySessionsByAttribute(
-                id,
+                
                 colleagueId,
                 departmentId,
                 shiftAssignmentId,

@@ -18,7 +18,8 @@ namespace WarehouseTracker.Application
             _dbContext = dbContext;
         }
 
-        public async Task LogEventAsync(string eventType, int colleagueId, int departmentId, DateTime eventTimestamp, string source)
+        public async Task LogEventAsync(string eventType, int colleagueId, int departmentId, 
+            DateTime eventTimestamp, string source, int shiftAssignmentId)
         {
             var newEvent = new Event
             {
@@ -26,7 +27,9 @@ namespace WarehouseTracker.Application
                 ColleagueId = colleagueId,
                 DepartmentId = departmentId,
                 Timestamp = eventTimestamp,
-                Source = source
+                Source = source,
+                ShiftAssignmentId = shiftAssignmentId
+
             };
 
             await _dbContext.Events.AddAsync(newEvent);
@@ -38,15 +41,16 @@ namespace WarehouseTracker.Application
             return await _dbContext.Events.ToListAsync();
         }
 
-        public async Task<List<Event>> RetrieveEventsByAttribute(Guid? Id, int? colleagueId, 
-            DateTime? eventTimestamp, string? eventType, int? departmentId, string? source)
+        public async Task<List<Event>> RetrieveEventsByAttribute(int? colleagueId, 
+            DateTime? eventTimestamp, string? eventType, int? departmentId, string? source, int? shiftAssignemtId)
         {
             return await _dbContext.Events
-                .Where(e => (!Id.HasValue || e.Id == Id.Value) &&
+                .Where(e => 
                             (!colleagueId.HasValue || e.ColleagueId == colleagueId.Value) &&
                             (!eventTimestamp.HasValue || e.Timestamp == eventTimestamp.Value) &&
                             (string.IsNullOrEmpty(eventType) || e.EventType == eventType) &&
-                            (!departmentId.HasValue || e.DepartmentId == departmentId.Value))
+                            (!departmentId.HasValue || e.DepartmentId == departmentId.Value) &&
+                            (!shiftAssignemtId.HasValue || e.ShiftAssignmentId == shiftAssignemtId.Value ))
                 .ToListAsync();
         }
     }

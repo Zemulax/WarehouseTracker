@@ -10,14 +10,12 @@ namespace WarehouseTracker.Application
     public interface IActivitySessionService
     {
         Task StartSessionAsync(
-            int Id,
+            
             int ColleagueId,
             int DepartmentId,
             int ShiftAssignmentId,
             string SessionType,
-            TimeOnly sessionStart,
-            TimeOnly sessionEnd
-            
+            TimeOnly sessionStart
 
             );
 
@@ -25,7 +23,7 @@ namespace WarehouseTracker.Application
         Task<List<ActivitySession>> RetrieveActivitySessionsAsync();
 
         Task<List<ActivitySession>> RetrieveActivitySessionsByAttribute(
-            int? Id,
+            
            int? ColleagueId,
             int? DepartmentId,
             int? ShiftAssignmentId,
@@ -34,6 +32,11 @@ namespace WarehouseTracker.Application
             TimeOnly? sessionEnd
             
 
+            );
+
+        Task ReplaceForShiftAsync(
+            int ShiftAssignmentId,
+            IReadOnlyList<ActivitySession> sessions
             );
 
 

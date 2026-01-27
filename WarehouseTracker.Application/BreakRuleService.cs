@@ -27,7 +27,7 @@ namespace WarehouseTracker.Application
             return await _dbContext.BreakRules.ToListAsync();
         }
 
-        public async Task<bool> SetBreakRule(string BreakType, TimeOnly breakstart, TimeOnly breakend)
+        public async Task<bool> SetBreakRule(string BreakType, int shiftAfterMinutes, int durationMinutes)
         {
             var existingbreakrule = await GetBreakRuleByTypeAsync(BreakType);
             if(existingbreakrule == null)
@@ -35,8 +35,8 @@ namespace WarehouseTracker.Application
                 var breakRuleEntity = new BreakRule
                 {
                     BreakType = BreakType,
-                    BreakStart = breakstart,
-                    BreakEnd = breakend
+                    StartAfterMinutes = shiftAfterMinutes,
+                    DurationMinutes = durationMinutes
                 };
 
                 _dbContext.BreakRules.Add(breakRuleEntity);

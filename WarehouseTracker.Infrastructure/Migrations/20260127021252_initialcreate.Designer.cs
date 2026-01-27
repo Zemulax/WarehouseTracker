@@ -12,7 +12,7 @@ using WarehouseTracker.Infrastructure;
 namespace WarehouseTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(WarehouseTrackerDbContext))]
-    [Migration("20260126220339_initialcreate")]
+    [Migration("20260127021252_initialcreate")]
     partial class initialcreate
     {
         /// <inheritdoc />
@@ -25,6 +25,38 @@ namespace WarehouseTracker.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("WarehouseTracker.Domain.ActivitySession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ColleagueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeOnly>("SessionEnd")
+                        .HasColumnType("time");
+
+                    b.Property<TimeOnly>("SessionStart")
+                        .HasColumnType("time");
+
+                    b.Property<string>("SessionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ShiftAssignmentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ActivitySessions");
+                });
+
             modelBuilder.Entity("WarehouseTracker.Domain.BreakRule", b =>
                 {
                     b.Property<int>("Id")
@@ -33,15 +65,15 @@ namespace WarehouseTracker.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<TimeOnly>("BreakEnd")
-                        .HasColumnType("time");
-
-                    b.Property<TimeOnly>("BreakStart")
-                        .HasColumnType("time");
-
                     b.Property<string>("BreakType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DurationMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StartAfterMinutes")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -120,6 +152,9 @@ namespace WarehouseTracker.Infrastructure.Migrations
                     b.Property<string>("EventType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ShiftAssignmentId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Source")
                         .IsRequired()

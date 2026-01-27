@@ -29,8 +29,8 @@ namespace WarehouseTracker.Api.Controllers
             
             var createdBreak = await _breakRuleService.SetBreakRule(
                 request.BreakType,
-                request.BreakStart,
-                request.BreakEnd
+                request.StartAfterMinutes,
+                request.DurationMinutes
                 );
             if(!createdBreak)
             {
@@ -65,8 +65,8 @@ namespace WarehouseTracker.Api.Controllers
              await _breakRuleService.SetBreakRule(
                 
                 request.BreakType,
-                request.BreakStart,
-                request.BreakEnd
+                request.StartAfterMinutes,
+                request.DurationMinutes
                 );
             
             return Ok($"Break Rule Updated Successfully");

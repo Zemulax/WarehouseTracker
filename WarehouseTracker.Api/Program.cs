@@ -25,7 +25,7 @@ namespace WarehouseTracker.Api
             builder.Services.AddScoped<IShiftAssignmentService, ShiftAssignmentService>();
             builder.Services.AddScoped<IBreakRuleService, BreakRuleService>();
             builder.Services.AddScoped<IEventService, EventService>();
-            builder.Services.AddScoped<IActivitySessionService, ActivitySessionService>();
+            builder.Services.AddScoped<IActivitySessionService, ActivitySessionServiceRepository>();
 
             var app = builder.Build();
 

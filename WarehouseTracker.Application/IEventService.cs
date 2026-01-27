@@ -19,18 +19,19 @@ namespace WarehouseTracker.Application
             int colleagueId,
             int departmentId,
             DateTime eventTimestamp,
-            string source
+            string source,
+            int ShiftAssignmentId
             );
 
         Task<List<Domain.Event>> RetrieveEventsAsync();
 
         Task<List<Domain.Event>> RetrieveEventsByAttribute(
-            Guid? Id,
             int? colleagueId,
             DateTime? eventTimestamp,
             string? eventType,
             int? departmentId,
-            string? source);
+            string? source,
+            int? ShiftAssignmentId);
 
 
     }
