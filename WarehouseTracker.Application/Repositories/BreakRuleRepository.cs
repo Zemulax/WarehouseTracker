@@ -1,18 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
+using WarehouseTracker.Application.Services;
 using WarehouseTracker.Domain;
 using WarehouseTracker.Infrastructure;
 
-namespace WarehouseTracker.Application
+namespace WarehouseTracker.Application.Repositories
 {
-    public class BreakRuleService : IBreakRuleService
+    public class BreakRuleRepository : IBreakRuleService
     {
 
         private readonly WarehouseTrackerDbContext _dbContext;
 
         //start from here. we should only be able to add break rule once.
 
-        public BreakRuleService(WarehouseTrackerDbContext dbContext)
+        public BreakRuleRepository(WarehouseTrackerDbContext dbContext)
         {
             _dbContext = dbContext;
         }

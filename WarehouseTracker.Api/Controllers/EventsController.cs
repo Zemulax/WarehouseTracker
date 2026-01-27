@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WarehouseTracker.Application;
+using WarehouseTracker.Application.Services;
 using WarehouseTracker.Domain;
 
 namespace WarehouseTracker.Api.Controllers

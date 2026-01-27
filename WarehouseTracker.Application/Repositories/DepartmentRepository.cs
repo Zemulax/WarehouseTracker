@@ -1,15 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WarehouseTracker.Application.Services;
 using WarehouseTracker.Domain;
 using WarehouseTracker.Infrastructure;
 
-namespace WarehouseTracker.Application
+namespace WarehouseTracker.Application.Repositories
 {
-    public class DepartmentService : IDepartmentService
+    public class DepartmentRepository : IDepartmentService
     {
 
         private readonly WarehouseTrackerDbContext _dbContext;
 
-        public DepartmentService(WarehouseTrackerDbContext dbContext)
+        public DepartmentRepository(WarehouseTrackerDbContext dbContext)
         {
             _dbContext = dbContext;
         }

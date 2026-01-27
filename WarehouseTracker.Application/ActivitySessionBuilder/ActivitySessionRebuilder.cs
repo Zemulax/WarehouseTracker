@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WarehouseTracker.Application.ActivitySessionBuilder;
+using WarehouseTracker.Application.Services;
 
-namespace WarehouseTracker.Application
+namespace WarehouseTracker.Application.ActivitySessionBuilder
 {
     public class ActivitySessionRebuilder : IActivitySessionRebuilder
     {

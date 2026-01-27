@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WarehouseTracker.Application.Services;
 using WarehouseTracker.Domain;
 using WarehouseTracker.Infrastructure;
 
-namespace WarehouseTracker.Application
+namespace WarehouseTracker.Application.Repositories
 {
-    public class ShiftAssignmentService : IShiftAssignmentService
+    public class ShiftAssignmentRepository : IShiftAssignmentService
     {
 
         private readonly WarehouseTrackerDbContext _dbContext;
 
-        public ShiftAssignmentService(WarehouseTrackerDbContext dbContext)
+        public ShiftAssignmentRepository(WarehouseTrackerDbContext dbContext)
         {
             _dbContext = dbContext;
         }

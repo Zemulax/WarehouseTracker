@@ -1,6 +1,5 @@
-﻿
-using WarehouseTracker.Domain;
-namespace WarehouseTracker.Application
+﻿using WarehouseTracker.Domain;
+namespace WarehouseTracker.Application.Services
 {
     /// <summary>
     /// Defines operations for registering a new colleague in the system.

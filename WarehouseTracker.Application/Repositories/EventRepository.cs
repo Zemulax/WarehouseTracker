@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WarehouseTracker.Application.Services;
 using WarehouseTracker.Domain;
 using WarehouseTracker.Infrastructure;
 
-namespace WarehouseTracker.Application
+namespace WarehouseTracker.Application.Repositories
 {
-    public class EventService : IEventService
+    public class EventRepository : IEventService
     {
         private readonly WarehouseTrackerDbContext _dbContext;
 
-        public EventService(WarehouseTrackerDbContext dbContext)
+        public EventRepository(WarehouseTrackerDbContext dbContext)
         {
             _dbContext = dbContext;
         }

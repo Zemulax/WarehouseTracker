@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WarehouseTracker.Application.Services;
 using WarehouseTracker.Domain;
 using WarehouseTracker.Infrastructure;
 
-namespace WarehouseTracker.Application
+namespace WarehouseTracker.Application.Repositories
 {
-    public class ActivitySessionServiceRepository : IActivitySessionService
+    public class ActivitySessionRepository : IActivitySessionService
     {
         // Implementation for ActivitySessionService goes here.
         private readonly WarehouseTrackerDbContext _dbContext;
 
-        public ActivitySessionServiceRepository(WarehouseTrackerDbContext dbContext)
+        public ActivitySessionRepository(WarehouseTrackerDbContext dbContext)
         {
             _dbContext = dbContext;
         }

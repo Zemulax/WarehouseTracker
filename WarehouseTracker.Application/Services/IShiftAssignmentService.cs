@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WarehouseTracker.Domain;
 
-namespace WarehouseTracker.Application
+namespace WarehouseTracker.Application.Services
 {
     public interface IShiftAssignmentService
     {

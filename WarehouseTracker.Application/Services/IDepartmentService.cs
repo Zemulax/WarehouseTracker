@@ -1,6 +1,6 @@
 ﻿using WarehouseTracker.Domain;
 
-namespace WarehouseTracker.Application
+namespace WarehouseTracker.Application.Services
 {
     public interface IDepartmentService
     {
