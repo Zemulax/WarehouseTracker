@@ -6,7 +6,7 @@ using WarehouseTracker.Infrastructure;
 namespace WarehouseTracker.Application.Repositories
 {
 
-    public class ColleagueRepository : IColleagueService
+    public class ColleagueRepository : IColleagueRepository
     {
         private readonly WarehouseTrackerDbContext _dbContext;
 
@@ -14,111 +14,27 @@ namespace WarehouseTracker.Application.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task RegisterColleagueAsync(
-            int Id,
-            string employeeId, 
-            string firstName, 
-            string lastName,
-            string role,
-            bool isActive)
+
+        public async Task AddAsync(Colleague colleague)
         {
-          var colleague = new Colleague
-            {  
-              Id = Id,
-              EmployeeId = employeeId,
-              FirstName = firstName,
-                LastName = lastName,
-                Role = role,
-                IsActive = isActive
-          };
-            _dbContext.Colleagues.Add(colleague);
-            await  _dbContext.SaveChangesAsync();
+           await _dbContext.Colleagues.AddAsync(colleague);
         }
 
-        public async Task<List<Colleague>> RetrieveColleagueAsync()
+        public async Task<List<Colleague>> GetAll()
         {
-            // Implementation for retrieving a colleague goes here.
             return await _dbContext.Colleagues.ToListAsync();
+               
         }
 
-        public async Task<List<Colleague>> RetrieveColleagueByAttribute(
-            int? id = null,
-            string? employeeId = null,
-            string? firstName = null,
-            string? lastName = null,
-            string? role = null,
-            bool? isActive = null
-            )
+        public async Task<Colleague?> GetByIdAsync(string ColleagueId)
         {
-            // Implementation for retrieving a colleague by ID goes here.
-            var query = _dbContext.Colleagues.AsQueryable();
-            if (id.HasValue)
-            {
-                query = query.Where(c => c.Id == id.Value);
-            }
-            if (!string.IsNullOrEmpty(employeeId))
-            {
-                query = query.Where(c => c.EmployeeId == employeeId);
-            }
-            if (!string.IsNullOrEmpty(firstName))
-            {
-                query = query.Where(c => c.FirstName == firstName);
-            }
-            if (!string.IsNullOrEmpty(lastName))
-            {
-                query = query.Where(c => c.LastName == lastName);
-            }
-            if (!string.IsNullOrEmpty(role))
-            {
-                query = query.Where(c => c.Role == role);
-            }
-            if (isActive.HasValue)
-            {
-                query = query.Where(c => c.IsActive == isActive.Value);
-            }
-            return await query.ToListAsync();
+            return await _dbContext.Colleagues.SingleOrDefaultAsync
+                (c => c.ColleagueId == ColleagueId);
         }
 
-        public async Task DeleteColleagueAsync(string employeeId)
+        public async Task SaveChangesAsync()
         {
-            var colleague = await _dbContext.Colleagues
-                .FirstOrDefaultAsync(c => c.EmployeeId == employeeId);
-            if (colleague != null)
-            {
-                _dbContext.Colleagues.Remove(colleague);
-                await _dbContext.SaveChangesAsync();
-            }
-        }
-
-        public async Task UpdateColleagueAsync(
-            string? employeeId,
-            string? firstName,
-            string? lastName,
-            string? role,
-            bool? isActive)
-        {
-            var colleague = await _dbContext.Colleagues
-                .FirstOrDefaultAsync(c => c.EmployeeId == employeeId);
-            if (colleague != null)
-            {
-                if (!string.IsNullOrEmpty(firstName))
-                {
-                    colleague.FirstName = firstName;
-                }
-                if (!string.IsNullOrEmpty(lastName))
-                {
-                    colleague.LastName = lastName;
-                }
-                if (!string.IsNullOrEmpty(role))
-                {
-                    colleague.Role = role;
-                }
-                if (isActive.HasValue)
-                {
-                    colleague.IsActive = isActive.Value;
-                }
-                await _dbContext.SaveChangesAsync();
-            }
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

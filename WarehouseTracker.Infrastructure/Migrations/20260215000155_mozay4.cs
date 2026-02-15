@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WarehouseTracker.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initialcreate : Migration
+    public partial class mozay4 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,7 @@ namespace WarehouseTracker.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ColleagueId = table.Column<int>(type: "int", nullable: false),
+                    ColleagueId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
                     ShiftAssignmentId = table.Column<int>(type: "int", nullable: false),
                     SessionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -50,7 +50,7 @@ namespace WarehouseTracker.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployeeId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ColleagueId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -80,13 +80,14 @@ namespace WarehouseTracker.Infrastructure.Migrations
                 name: "Events",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ColleagueId = table.Column<int>(type: "int", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ColleagueId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DepartmentCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShiftAssignmentId = table.Column<int>(type: "int", nullable: false),
                     EventType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DepartmentId = table.Column<int>(type: "int", nullable: false),
-                    Source = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShiftAssignmentId = table.Column<int>(type: "int", nullable: false)
+                    TimestampUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Source = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,7 +100,7 @@ namespace WarehouseTracker.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ColleagueId = table.Column<int>(type: "int", nullable: false),
+                    ColleagueId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
                     ShiftDate = table.Column<DateOnly>(type: "date", nullable: false),
                     ShiftStart = table.Column<TimeOnly>(type: "time", nullable: false),

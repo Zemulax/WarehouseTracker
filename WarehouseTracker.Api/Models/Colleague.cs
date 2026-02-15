@@ -7,8 +7,7 @@ namespace WarehouseTracker.Api.Models
     /// </summary>
     public class Colleague
     {
-        public int Id { get; set; }
-        public string EmployeeId { get; set; } = string.Empty;
+        public string ColleagueId { get; set; } = string.Empty;
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;

@@ -6,61 +6,29 @@ using WarehouseTracker.Infrastructure;
 
 namespace WarehouseTracker.Application.Repositories
 {
-    public class BreakRuleRepository : IBreakRuleService
+    public class BreakRuleRepository : IBreakRuleRepository
     {
+        
 
         private readonly WarehouseTrackerDbContext _dbContext;
-
-        //start from here. we should only be able to add break rule once.
 
         public BreakRuleRepository(WarehouseTrackerDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-
-        public async Task<BreakRule?> GetBreakRuleByTypeAsync(string breakType)
+        public async Task AddAsync(BreakRule breakRule)
         {
-            return await _dbContext.BreakRules.FirstOrDefaultAsync(b => b.BreakType == breakType);
+            await _dbContext.BreakRules.AddAsync(breakRule);
         }
 
-        public async Task<List<BreakRule>> GetBreakRulesAsync()
+        public async Task<BreakRule> GetBreakRule()
         {
-            return await _dbContext.BreakRules.ToListAsync();
+            return await _dbContext.BreakRules.FirstAsync();
         }
 
-        public async Task<bool> SetBreakRule(string BreakType, int shiftAfterMinutes, int durationMinutes)
+        public async Task SaveChangesAsync()
         {
-            var existingbreakrule = await GetBreakRuleByTypeAsync(BreakType);
-            if(existingbreakrule == null)
-            {
-                var breakRuleEntity = new BreakRule
-                {
-                    BreakType = BreakType,
-                    StartAfterMinutes = shiftAfterMinutes,
-                    DurationMinutes = durationMinutes
-                };
-
-                _dbContext.BreakRules.Add(breakRuleEntity);
-                await _dbContext.SaveChangesAsync();
-                return true;
-            }
-
-            else
-            {
-                return false;
-            }
-            
-                
-            
-        }
-
-        public async Task UpdateBreakRule(BreakRule newBreakRule)
-        {
-           
-            _dbContext.BreakRules.Update(newBreakRule);
             await _dbContext.SaveChangesAsync();
         }
-
-
     }
 }

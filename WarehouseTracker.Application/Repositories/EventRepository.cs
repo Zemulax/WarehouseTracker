@@ -10,7 +10,7 @@ using WarehouseTracker.Infrastructure;
 
 namespace WarehouseTracker.Application.Repositories
 {
-    public class EventRepository : IEventService
+    public class EventRepository : IEventRepository
     {
         private readonly WarehouseTrackerDbContext _dbContext;
 
@@ -19,40 +19,30 @@ namespace WarehouseTracker.Application.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task LogEventAsync(string eventType, int colleagueId, int departmentId, 
-            DateTime eventTimestamp, string source, int shiftAssignmentId)
+        public async Task AddAsync(Event evt)
         {
-            var newEvent = new Event
-            {
-                EventType = eventType,
-                ColleagueId = colleagueId,
-                DepartmentId = departmentId,
-                Timestamp = eventTimestamp,
-                Source = source,
-                ShiftAssignmentId = shiftAssignmentId
-
-            };
-
-            await _dbContext.Events.AddAsync(newEvent);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.Events.AddAsync(evt);
         }
 
-        public async Task<List<Event>> RetrieveEventsAsync()
-        {
-            return await _dbContext.Events.ToListAsync();
-        }
-
-        public async Task<List<Event>> RetrieveEventsByAttribute(int? colleagueId, 
-            DateTime? eventTimestamp, string? eventType, int? departmentId, string? source, int? shiftAssignemtId)
+        public async Task<List<Event>> GetByColleagueAsync(string colleagueId)
         {
             return await _dbContext.Events
-                .Where(e => 
-                            (!colleagueId.HasValue || e.ColleagueId == colleagueId.Value) &&
-                            (!eventTimestamp.HasValue || e.Timestamp == eventTimestamp.Value) &&
-                            (string.IsNullOrEmpty(eventType) || e.EventType == eventType) &&
-                            (!departmentId.HasValue || e.DepartmentId == departmentId.Value) &&
-                            (!shiftAssignemtId.HasValue || e.ShiftAssignmentId == shiftAssignemtId.Value ))
+            .Where(e => e.ColleagueId == colleagueId)
+            .OrderBy(e => e.TimestampUtc)
+            .ToListAsync();
+        }
+
+        public async Task<List<Event>> GetByShiftAsync(int shiftAssignmentId)
+        {
+            return await _dbContext.Events
+                .Where(e => e.ShiftAssignmentId == shiftAssignmentId)
+                .OrderBy(e => e.TimestampUtc)
                 .ToListAsync();
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

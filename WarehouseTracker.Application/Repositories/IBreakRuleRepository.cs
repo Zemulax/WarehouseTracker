@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using WarehouseTracker.Domain;
 
-namespace WarehouseTracker.Application.Services
+namespace WarehouseTracker.Application.Repositories
 {
-    public interface IBreakRuleService
+    public interface IBreakRuleRepository
     {
-
+        Task AddAsync(BreakRule breakRule);
         Task<BreakRule> GetBreakRule();
 
-
+        Task SaveChangesAsync();
     }
 }

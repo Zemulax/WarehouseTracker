@@ -5,95 +5,33 @@ using WarehouseTracker.Infrastructure;
 
 namespace WarehouseTracker.Application.Repositories
 {
-    public class DepartmentRepository : IDepartmentService
+    public class DepartmentRepository : IDepartmenRepository
     {
-
         private readonly WarehouseTrackerDbContext _dbContext;
 
         public DepartmentRepository(WarehouseTrackerDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-
-        public async Task RegisterDepartmentAsync(
-            int Id,
-            string departmentName,
-            string deparmentCode,
-            string departmentGroupCode)
+        public async Task AddAsync(Department department)
         {
-            var department = new Department
-            {
-                Id = Id,
-                DepartmentName = departmentName,
-                DeparmentCode = deparmentCode,
-                DepartmentGroupCode = departmentGroupCode
-            };
-            _dbContext.Departments.Add(department);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.Departments.AddAsync(department);
         }
 
-        public async Task<List<Department>> RetrieveDepartmentAsync()
+        public async Task<List<Department>> GetAllAsync()
         {
             return await _dbContext.Departments.ToListAsync();
         }
 
-        public async Task<List<Department>> RetrieveDepartmentByAttribute(
-            int? Id,
-            string? departmentName,
-            string? deparmentCode,
-            string? departmentGroupCode
-            )
+        public async Task<Department> GetByCodeAsync(string code)
         {
-            var query = _dbContext.Departments.AsQueryable();
-            if (Id.HasValue)
-            {
-                query = query.Where(d => d.Id == Id.Value);
-            }
-            if (!string.IsNullOrEmpty(departmentName))
-            {
-                query = query.Where(d => d.DepartmentName == departmentName);
-            }
-            if (!string.IsNullOrEmpty(deparmentCode))
-            {
-                query = query.Where(d => d.DeparmentCode == deparmentCode);
-            }
-            if (!string.IsNullOrEmpty(departmentGroupCode))
-            {
-                query = query.Where(d => d.DepartmentGroupCode == departmentGroupCode);
-            }
-            return await query.ToListAsync();
+            return await _dbContext.Departments
+                .FirstAsync(d => d.DeparmentCode == code);
         }
 
-        public async Task DeleteDepartmentAsync(string deparmentCode)
+        public async Task SaveChangeAsync()
         {
-            var department = await _dbContext.Departments
-                .FirstOrDefaultAsync(d => d.DeparmentCode == deparmentCode);
-            if (department != null)
-            {
-                _dbContext.Departments.Remove(department);
-                await _dbContext.SaveChangesAsync();
-            }
-        }
-
-        public async Task UpdateDepartmentAsync(
-            string deparmentCode,
-            string? departmentName,
-            string? departmentGroupCode)
-        {
-            var department = await _dbContext.Departments
-                .FirstOrDefaultAsync(d => d.DeparmentCode == deparmentCode);
-            if (department != null)
-            {
-                if (!string.IsNullOrEmpty(departmentName))
-                {
-                    department.DepartmentName = departmentName;
-                }
-                if (!string.IsNullOrEmpty(departmentGroupCode))
-                {
-                    department.DepartmentGroupCode = departmentGroupCode;
-                }
-                await _dbContext.SaveChangesAsync();
-            }
+           await _dbContext.SaveChangesAsync();
         }
     }
 }

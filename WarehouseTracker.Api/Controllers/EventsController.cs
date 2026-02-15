@@ -9,70 +9,18 @@ namespace WarehouseTracker.Api.Controllers
     [ApiController]
     public class EventsController : ControllerBase
     {
-        // Implementation for EventsController goes here.
-
         private readonly IEventService _eventService;
 
-        public EventsController(IEventService eventService)
+        public EventsController (IEventService eventService)
         {
             _eventService = eventService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> LogEvent([FromBody] Domain.Event request)
+        public async Task<IActionResult> CreateEvent(Event request)
         {
-            // Implementation for creating an event goes here.
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            await _eventService.LogEventAsync(
-                request.EventType,
-                request.ColleagueId,
-                request.DepartmentId,
-                request.Timestamp,
-                request.Source,
-                request.ShiftAssignmentId
-                );
-            return Ok($"Event {request.EventType} created successfully.");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> RetrieveAllEvents()
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var events = await _eventService.RetrieveEventsAsync();
-            return Ok(events);
-        }
-
-        [HttpGet("search")]
-        public async Task<IActionResult> RetrieveEventsByAttribute(
-            [FromQuery] Guid? id = null,
-            [FromQuery] string? eventType = null,
-            [FromQuery] int? colleagueId = null,
-            [FromQuery] int? departmentId = null,
-            [FromQuery] DateTime? timestamp = null,
-            [FromQuery] string? source = null
-            )
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var events = await _eventService.RetrieveEventsByAttribute(
-                
-                colleagueId,
-                timestamp,
-                eventType,
-                departmentId,
-                source,
-                departmentId
-
-                );
-            return Ok(events);
+            await _eventService.CreateEventAsync(request);
+            return Ok();
         }
     }
 }

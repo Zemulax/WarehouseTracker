@@ -14,6 +14,7 @@ namespace WarehouseTracker.Api
 
             // Add services to the container.
 
+
             builder.Services.AddControllers();
             
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -21,12 +22,13 @@ namespace WarehouseTracker.Api
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddInfrastructureServices(builder.Configuration);
-            builder.Services.AddScoped<IColleagueService, ColleagueRepository>();
-            builder.Services.AddScoped<IDepartmentService, DepartmentRepository>();
-            builder.Services.AddScoped<IShiftAssignmentService, ShiftAssignmentRepository>();
-            builder.Services.AddScoped<IBreakRuleService, BreakRuleRepository>();
-            builder.Services.AddScoped<IEventService, EventRepository>();
-            builder.Services.AddScoped<IActivitySessionService, ActivitySessionRepository>();
+            builder.Services.AddScoped<IColleagueRepository, ColleagueRepository>();
+            builder.Services.AddScoped<IDepartmenRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IShiftAssignmentRepository, ShiftAssignmentRepository>();
+            builder.Services.AddScoped<IBreakRuleRepository, BreakRuleRepository>();
+            builder.Services.AddScoped<IEventRepository, EventRepository>();
+
+            builder.Services.AddScoped<IColleagueService, ColleagueService>();
 
             var app = builder.Build();
 

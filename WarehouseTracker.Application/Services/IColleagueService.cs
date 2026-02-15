@@ -8,34 +8,8 @@ namespace WarehouseTracker.Application.Services
     /// of an onboarding or personnel management workflow.</remarks>
     public interface IColleagueService
     {
-        Task RegisterColleagueAsync(
-            int Id,
-            string employeeId, 
-            string firstName, 
-            string lastName,
-            string role,
-            bool isActive );
-
+        Task RegisterColleagueAsync(Colleague colleague);
         Task<List<Colleague>> RetrieveColleagueAsync();
-
-        Task<List<Colleague>> RetrieveColleagueByAttribute(
-
-            int? Id,
-            string? employeeId,
-            string? firstName,
-            string? lastName,
-            string? role,
-            bool? isActive
-            );
-
-        Task DeleteColleagueAsync(string employeeId);
-        Task UpdateColleagueAsync(
-            string employeeId,
-            string? firstName,
-            string? lastName,
-            string? role,
-            bool? isActive);
+        Task<Colleague> GetColleagueById(string colleagueId);
     }
-
-
 }

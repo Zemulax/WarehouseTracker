@@ -15,24 +15,6 @@ namespace WarehouseTracker.Api.Controllers
             _activitySessionService = activitySessionService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> StartActivitySession([FromBody] ActivitySession request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            await _activitySessionService.StartSessionAsync(
-                
-                request.ColleagueId,
-                request.DepartmentId,
-                request.ShiftAssignmentId,
-                request.SessionType,
-                request.SessionStart
-                );
-            return Ok("Activity session logged successfully.");
-        }
-
         [HttpGet]
         public async Task<IActionResult> RetrieveAllActivitySessions()
         {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Mvc;
 using WarehouseTracker.Api.Models;
 using WarehouseTracker.Application.Services;
@@ -22,97 +23,22 @@ namespace WarehouseTracker.Api.Controllers
             _colleagueService = colleagueService;
         }
 
-        //register a colleague
         [HttpPost]
-        public async Task<IActionResult> RegisterColleague([FromBody] Colleague request)
+        public async Task< IActionResult> CreateColleague(Colleague request)
         {
-            // Implementation for registering a colleague goes here.
-            if (!ModelState.IsValid)
+            var colleague = new Domain.Colleague
             {
-                return BadRequest(ModelState);
-            }
+                ColleagueId = request.ColleagueId,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Role = request.Role,
+                IsActive = request.IsActive,
+            };
 
-            await _colleagueService.RegisterColleagueAsync(
-                request.Id,
-                request.EmployeeId,
-                request.FirstName,
-                request.LastName,
-                request.Role,
-                request.IsActive
-                );
+            await _colleagueService.RegisterColleagueAsync(colleague);
+            return Created("Colleague Added Successfully", null);
 
-            return Ok("Successfullly saved colleague");
         }
-
-        //retrieve all colleagues
-        [HttpGet]
-        public async Task<IActionResult> RetrieveAllColleagues()
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var colleagues = await _colleagueService.RetrieveColleagueAsync();
-            return Ok(colleagues);
-        }
-
-        //retrieve colleague by attribute(id,name...etc)
-        [HttpGet("filter-by")]
-        public async Task<IActionResult> RetrieveColleagueByAttributeAsync(
-            int? id = null,
-            string? employeeId = null,
-            string? firstName = null,
-            string? lastName = null,
-            string? role = null,
-            bool? isActive = null
-            )
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var colleague = await _colleagueService.RetrieveColleagueByAttribute(
-                id, employeeId, firstName, lastName, role, isActive
-                );
-
-            return Ok(colleague);
-        }
-
-        //delete colleague
-        [HttpDelete("{employeeId}")]
-        public async Task<IActionResult> DeleteColleague(string employeeId)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            await _colleagueService.DeleteColleagueAsync(employeeId);
-            return Ok("Successfully deleted colleague");
-        }
-
-        //update colleague
-        [HttpPut ("{employeeId}")]
-        public async Task<IActionResult> UpdateColleague(
-            string employeeId,
-            string? firstName = null,
-            string? lastName = null,
-            string? role = null,
-            bool? isActive = null
-            )
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            await _colleagueService.UpdateColleagueAsync(
-              employeeId, firstName, lastName, role, isActive
-                );
-
-            return Ok("Successfully updated colleague");
-        }
-
     }
 
 }

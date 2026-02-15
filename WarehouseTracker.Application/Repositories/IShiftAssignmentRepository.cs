@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using WarehouseTracker.Domain;
 
-namespace WarehouseTracker.Application.Services
+namespace WarehouseTracker.Application.Repositories
 {
-    public interface IShiftAssignmentService
+    public interface IShiftAssignmentRepository
     {
-        Task<ShiftAssignment> GetShiftAssignment(string colleagueId);
-
         Task AddAsync(ShiftAssignment shiftAssignment);
+        Task <ShiftAssignment>GetShiftAssignmentAsync(string colleagueId);
+        Task SaveChangesAsync();
     }
 }
