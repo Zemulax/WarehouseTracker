@@ -10,7 +10,8 @@ namespace WarehouseTracker.Application.Repositories
     public interface IShiftAssignmentRepository
     {
         Task AddAsync(ShiftAssignment shiftAssignment);
-        Task <ShiftAssignment>GetShiftAssignmentAsync(string colleagueId);
+        Task<ShiftAssignment?> GeByIdAsync(int shiftId);
+        Task <ShiftAssignment?>GetActiveShiftAsync(string colleagueId, DateTimeOffset timeStamp);        
         Task SaveChangesAsync();
     }
 }

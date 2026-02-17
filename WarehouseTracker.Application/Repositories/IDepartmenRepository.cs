@@ -10,7 +10,7 @@ namespace WarehouseTracker.Application.Repositories
     public interface IDepartmenRepository
     {
         Task AddAsync(Department department);
-        Task<Department> GetByCodeAsync(string code);
+        Task<Department?> GetByCodeAsync(string code);
         Task<List<Department>> GetAllAsync();
         Task SaveChangeAsync();
 

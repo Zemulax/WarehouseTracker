@@ -42,7 +42,7 @@ namespace WarehouseTracker.Application.Services
             return _departmenRepository.GetAllAsync();
         }
 
-        public Task<Department> GetByCodeAsync(string code)
+        public Task<Department?> GetByCodeAsync(string code)
         {
             
             var dept = _departmenRepository.GetByCodeAsync(code);

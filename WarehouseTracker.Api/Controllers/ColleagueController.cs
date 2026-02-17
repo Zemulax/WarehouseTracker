@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Mvc;
 using WarehouseTracker.Api.Models;
 using WarehouseTracker.Application.Services;
+using WarehouseTracker.Domain;
 
 namespace WarehouseTracker.Api.Controllers
 {
@@ -24,9 +25,9 @@ namespace WarehouseTracker.Api.Controllers
         }
 
         [HttpPost]
-        public async Task< IActionResult> CreateColleague(Colleague request)
+        public async Task< IActionResult> CreateColleague(ColleagueDTO request)
         {
-            var colleague = new Domain.Colleague
+            var colleague = new Colleague
             {
                 ColleagueId = request.ColleagueId,
                 FirstName = request.FirstName,
@@ -38,6 +39,37 @@ namespace WarehouseTracker.Api.Controllers
             await _colleagueService.RegisterColleagueAsync(colleague);
             return Created("Colleague Added Successfully", null);
 
+        }
+
+        [HttpGet("{colleagueId}")]
+        public async Task<ColleagueDTO> GetColleagueAsync(string colleagueId )
+        {
+            var colleagueDomain =  await _colleagueService.GetColleagueById(colleagueId);
+
+            return new ColleagueDTO
+            {
+
+                ColleagueId = colleagueDomain.ColleagueId,
+                FirstName = colleagueDomain.FirstName,
+                LastName = colleagueDomain.LastName,
+                Role = colleagueDomain.Role,
+                IsActive = colleagueDomain.IsActive,
+
+            };
+        }
+
+        [HttpGet]
+        public async Task<List<ColleagueDTO>> GetColleaguesAsync()
+        {
+            var colleagues = await _colleagueService.RetrieveColleagueAsync();
+
+            return colleagues.Select(c => new ColleagueDTO{
+                ColleagueId=c.ColleagueId,
+                FirstName=c.FirstName,
+                LastName=c.LastName,
+                Role=c.Role,
+                IsActive=c.IsActive,
+            }).ToList();
         }
     }
 

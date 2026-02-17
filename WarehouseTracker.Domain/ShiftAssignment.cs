@@ -10,9 +10,7 @@ namespace WarehouseTracker.Domain
     {
         public int Id { get; set; }
         public string ColleagueId { get; set; } = null!;
-        public int DepartmentId { get; set; }
-        public DateOnly ShiftDate { get; set; }
-        public TimeOnly ShiftStart { get; set; }
-        public TimeOnly ShiftEnd { get; set; }
+        public DateTimeOffset ShiftStart { get; set; }
+        public DateTimeOffset ShiftEnd { get; set; }
     }
 }

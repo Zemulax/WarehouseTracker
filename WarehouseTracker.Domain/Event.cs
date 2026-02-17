@@ -18,7 +18,7 @@ namespace WarehouseTracker.Domain
 
         public string EventType { get; set; } = null!;
 
-        public DateTime TimestampUtc { get; set; }
+        public DateTimeOffset TimestampUtc { get; set; }
 
         public string Source { get; set; } = "User";
     }

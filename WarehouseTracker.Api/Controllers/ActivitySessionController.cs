@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WarehouseTracker.Api.Models;
-using WarehouseTracker.Application.Services;
+using WarehouseTracker.Application.ActivitySessions;
 
 namespace WarehouseTracker.Api.Controllers
 {
@@ -16,41 +16,13 @@ namespace WarehouseTracker.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> RetrieveAllActivitySessions()
+        public async Task<IActionResult>GetByShift(int? shiftId, string? colleagueId)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var activitySessions = await _activitySessionService.RetrieveActivitySessionsAsync();
-            return Ok(activitySessions);
+            if (shiftId == null && colleagueId == null)
+                return BadRequest("At least one filter must be provided.");
+            var sessions = await _activitySessionService.GetByShiftAsync(shiftId, colleagueId);
+            return Ok(sessions);
         }
 
-        [HttpGet("search")]
-        public async Task<IActionResult> RetrieveActivitySessionsByAttribute(
-            [FromQuery] int? colleagueId = null,
-            [FromQuery] int? departmentId = null,
-            [FromQuery] int? shiftAssignmentId = null,
-            [FromQuery] string? sessionType = null,
-            [FromQuery] TimeOnly? activityStart = null,
-            [FromQuery] TimeOnly? activityEnd = null
-            
-            )
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var activitySessions = await _activitySessionService.RetrieveActivitySessionsByAttribute(
-                
-                colleagueId,
-                departmentId,
-                shiftAssignmentId,
-                sessionType,
-                activityStart,
-                activityEnd
-                );
-            return Ok(activitySessions);
-        }
     }
 }

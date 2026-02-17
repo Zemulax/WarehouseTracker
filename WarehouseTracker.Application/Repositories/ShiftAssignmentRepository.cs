@@ -23,10 +23,20 @@ namespace WarehouseTracker.Application.Repositories
             await _dbContext.ShiftAssignments.AddAsync(shiftAssignment);
         }
 
-        public async Task<ShiftAssignment> GetShiftAssignmentAsync(string colleagueId)
+        public async Task<ShiftAssignment?> GeByIdAsync(int shiftId)
         {
-          return await _dbContext.ShiftAssignments.
-                 FirstAsync(s => s.ColleagueId == colleagueId);
+            return await _dbContext.ShiftAssignments.
+                  SingleOrDefaultAsync(s => s.Id == shiftId);
+        }
+
+        public async Task<ShiftAssignment?> GetActiveShiftAsync(string colleagueId, DateTimeOffset timeStamp)
+        {
+            return await _dbContext.ShiftAssignments
+                .FirstOrDefaultAsync(s =>
+                s.ColleagueId == colleagueId &&
+                s.ShiftStart <= timeStamp &&
+                s.ShiftEnd >= timeStamp);
+
         }
 
         public async Task SaveChangesAsync()

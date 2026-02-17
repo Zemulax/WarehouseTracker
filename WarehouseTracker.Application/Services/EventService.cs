@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WarehouseTracker.Application.ActivitySessions;
 using WarehouseTracker.Application.Repositories;
 using WarehouseTracker.Domain;
 
@@ -14,18 +15,21 @@ namespace WarehouseTracker.Application.Services
         private readonly IColleagueService _colleagueService;
         private readonly IDepartmentService _departmentService;
         private readonly IShiftAssignmentService _shiftService;
+        private readonly IActivitySessionRebuilder _activitySessionRebuilder;
         
 
         public EventService(
             IEventRepository eventRepository,
             IColleagueService colleagueService,
             IDepartmentService departmentService,
-            IShiftAssignmentService shiftService)
+            IShiftAssignmentService shiftService,
+            IActivitySessionRebuilder activitySessionRebuilder)
         {
             _eventRepository = eventRepository;
             _colleagueService = colleagueService;
             _departmentService = departmentService;
             _shiftService = shiftService;
+            _activitySessionRebuilder = activitySessionRebuilder;
         }
 
         public async Task CreateEventAsync(Event request)
@@ -36,7 +40,8 @@ namespace WarehouseTracker.Application.Services
                 throw new Exception("Colleague not found");
 
             // 2. Resolve shift
-            var shift = await _shiftService.GetShiftAssignment(colleague.ColleagueId);
+            var shift = await _shiftService.GetShiftActiveShiftAsync(colleague.ColleagueId, request.TimestampUtc );
+            Console.WriteLine(shift);
             if (shift == null)
                 throw new Exception("No active shift");
 
@@ -66,6 +71,8 @@ namespace WarehouseTracker.Application.Services
             }
 
             // 5. Rebuild sessions
+            await _activitySessionRebuilder.RebuildForAsync(shift.Id);
+
         }
 
         public async Task<List<Event>> GetEventsByShiftAsync(int shiftAssignmentId)

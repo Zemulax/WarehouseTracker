@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WarehouseTracker.Api.Models;
 using WarehouseTracker.Application.Services;
 using WarehouseTracker.Domain;
 
@@ -17,9 +18,17 @@ namespace WarehouseTracker.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEvent(Event request)
+        public async Task<IActionResult> CreateEvent(EventDTO request)
         {
-            await _eventService.CreateEventAsync(request);
+            var eventDomain = new Event
+            {
+                ColleagueId = request.ColleagueId,
+                DepartmentCode = request.DepartmentCode,
+                EventType = request.EventType,
+                TimestampUtc = request.TimestampUtc,
+
+            };
+            await _eventService.CreateEventAsync(eventDomain);
             return Ok();
         }
     }

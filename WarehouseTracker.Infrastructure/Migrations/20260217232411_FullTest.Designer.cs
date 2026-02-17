@@ -12,8 +12,8 @@ using WarehouseTracker.Infrastructure;
 namespace WarehouseTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(WarehouseTrackerDbContext))]
-    [Migration("20260215000155_mozay4")]
-    partial class mozay4
+    [Migration("20260217232411_FullTest")]
+    partial class FullTest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,14 +37,14 @@ namespace WarehouseTracker.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
-                    b.Property<TimeOnly>("SessionEnd")
-                        .HasColumnType("time");
+                    b.Property<DateTimeOffset>("SessionEnd")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<TimeOnly>("SessionStart")
-                        .HasColumnType("time");
+                    b.Property<DateTimeOffset>("SessionStart")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("SessionType")
                         .IsRequired()
@@ -165,8 +165,8 @@ namespace WarehouseTracker.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("TimestampUtc")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("TimestampUtc")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -185,17 +185,11 @@ namespace WarehouseTracker.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
+                    b.Property<DateTimeOffset>("ShiftEnd")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<DateOnly>("ShiftDate")
-                        .HasColumnType("date");
-
-                    b.Property<TimeOnly>("ShiftEnd")
-                        .HasColumnType("time");
-
-                    b.Property<TimeOnly>("ShiftStart")
-                        .HasColumnType("time");
+                    b.Property<DateTimeOffset>("ShiftStart")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 

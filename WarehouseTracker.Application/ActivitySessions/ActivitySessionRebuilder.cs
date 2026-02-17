@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WarehouseTracker.Application.Repositories;
+
+namespace WarehouseTracker.Application.ActivitySessions
+{
+    public class ActivitySessionRebuilder : IActivitySessionRebuilder
+    {
+        private readonly IShiftAssignmentRepository _shiftAssignmentRepository;
+        private readonly IEventRepository _eventRepository;
+        private readonly IActivitySessionRepository _activitySessionRepository;
+        private readonly IActivitySessionBuilder _activitySessionBuilder;
+
+        public ActivitySessionRebuilder(IShiftAssignmentRepository assignmentRepository, IEventRepository eventRepository, IActivitySessionRepository activitySessionRepository, IActivitySessionBuilder activitySessionBuilder)
+        {
+            _shiftAssignmentRepository = assignmentRepository;
+            _eventRepository = eventRepository;
+            _activitySessionRepository = activitySessionRepository;
+            _activitySessionBuilder = activitySessionBuilder;
+        }
+
+        public async Task RebuildForAsync(int shiftId)
+        {
+            var shift = await _shiftAssignmentRepository.GeByIdAsync(shiftId);
+            if (shift == null)
+            {
+                throw new ArgumentNullException(nameof(shiftId));
+            }
+            var events = await _eventRepository.GetByShiftAsync(shiftId);
+
+            var sessions = _activitySessionBuilder.Build(shift, events);
+
+            await _activitySessionRepository.DeleteShiftAsync(shiftId);
+            await _activitySessionRepository.AddRangeAsync(sessions);
+            await _activitySessionRepository.SaveChangesAsync();
+        }
+    }
+}

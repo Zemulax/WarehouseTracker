@@ -20,6 +20,9 @@ namespace WarehouseTracker.Application.Services
         public async Task<Colleague> GetColleagueById(string colleagueId)
         {
            var coll = await _colleagueRepository.GetByIdAsync(colleagueId);
+            if (coll == null) { 
+            throw new Exception() { };
+            }
             return coll;
         }
 

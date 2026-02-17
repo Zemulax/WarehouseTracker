@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using WarehouseTracker.Infrastructure;
 using System.Text.Json.Serialization;
+using WarehouseTracker.Application.ActivitySessions;
 using WarehouseTracker.Application.Repositories;
 using WarehouseTracker.Application.Services; // Add this using directive
+using WarehouseTracker.Infrastructure;
 
 namespace WarehouseTracker.Api
 {
@@ -27,8 +28,17 @@ namespace WarehouseTracker.Api
             builder.Services.AddScoped<IShiftAssignmentRepository, ShiftAssignmentRepository>();
             builder.Services.AddScoped<IBreakRuleRepository, BreakRuleRepository>();
             builder.Services.AddScoped<IEventRepository, EventRepository>();
+            builder.Services.AddScoped<IActivitySessionRepository, ActivitySessionRepository>();
 
             builder.Services.AddScoped<IColleagueService, ColleagueService>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IEventService, EventService>();
+            builder.Services.AddScoped<IActivitySessionService, ActivitySessionService>();
+            builder.Services.AddScoped<IShiftAssignmentService, ShiftAssignmentService>();
+            builder.Services.AddScoped<IShiftAssignmentService, ShiftAssignmentService>();
+
+            builder.Services.AddScoped<IActivitySessionBuilder, ActivitySessionBuilder>();
+            builder.Services.AddScoped<IActivitySessionRebuilder, ActivitySessionRebuilder>();
 
             var app = builder.Build();
 

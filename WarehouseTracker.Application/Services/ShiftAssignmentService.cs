@@ -16,17 +16,22 @@ namespace WarehouseTracker.Application.Services
         _repository = shiftAssignmentRepository;
         }
 
-        public async Task<ShiftAssignment> GetShiftAssignment(string colleagueId)
+        public async Task CreateAsync(ShiftAssignment assignment)
         {
-            var shift = await _repository.GetShiftAssignmentAsync(colleagueId);
-            return shift;
+            var shift = new ShiftAssignment
+            {
+                ColleagueId = assignment.ColleagueId,
+                ShiftStart = assignment.ShiftStart,
+                ShiftEnd = assignment.ShiftEnd,
+            };
 
+            await _repository.AddAsync(shift);
+            await _repository.SaveChangesAsync();
         }
 
-        public async Task AddAsync(ShiftAssignment shiftAssignment)
+        public Task<ShiftAssignment?> GetShiftActiveShiftAsync(string colleagueId, DateTimeOffset timeStamp)
         {
-            await _repository.AddAsync(shiftAssignment);
-            await _repository.SaveChangesAsync();
+            return _repository.GetActiveShiftAsync(colleagueId, timeStamp);
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿namespace WarehouseTracker.Api.Models
 {
-    public class ActivitySession
+    public class ActivitySessionDTO
     {
         public string ColleagueId { get; set; } = null!;
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
         public int ShiftAssignmentId { get; set; }
         public string SessionType { get; set; } = null!;
-        public TimeOnly SessionStart { get; set; }
-        public TimeOnly SessionEnd { get; set; }
+        public DateTimeOffset SessionStart { get; set; }
+        public DateTimeOffset SessionEnd { get; set; }
     }
 }

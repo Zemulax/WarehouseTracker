@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the shape of an incoming request to register a new department
     /// </summary>
-    public class Department
+    public class DepartmentDTO
     {
         public string DepartmentName { get; set; } = string.Empty;
         public string DeparmentCode { get; set; } = string.Empty;

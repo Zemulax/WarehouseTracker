@@ -23,10 +23,10 @@ namespace WarehouseTracker.Application.Repositories
             return await _dbContext.Departments.ToListAsync();
         }
 
-        public async Task<Department> GetByCodeAsync(string code)
+        public async Task<Department?> GetByCodeAsync(string departmentCode)
         {
             return await _dbContext.Departments
-                .FirstAsync(d => d.DeparmentCode == code);
+                .FirstOrDefaultAsync(d => d.DeparmentCode == departmentCode);
         }
 
         public async Task SaveChangeAsync()
