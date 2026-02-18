@@ -32,7 +32,7 @@ public class ActivitySessionBuilder : IActivitySessionBuilder
                         ShiftAssignmentId = shift.Id,
                         DepartmentId = evt.Id,
                         SessionType = "Active",
-                        SessionEnd = evt.TimestampUtc
+                        SessionStart = evt.TimestampUtc
                     };
 
                     break;
@@ -54,6 +54,7 @@ public class ActivitySessionBuilder : IActivitySessionBuilder
 
                 case "BreakEnded":
                     CloseIfOpen(evt.TimestampUtc, ref openSession, sessions);
+                    
                     var lastDept = sessions.LastOrDefault(s => s.SessionType == "Active")?.DepartmentId;
                     
    
