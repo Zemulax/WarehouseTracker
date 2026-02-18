@@ -35,9 +35,9 @@ namespace WarehouseTracker.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    BreakType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartAfterMinutes = table.Column<int>(type: "int", nullable: false),
-                    DurationMinutes = table.Column<int>(type: "int", nullable: false)
+                    BreakType = table.Column<int>(type: "int", nullable: false),
+                    BreakStart = table.Column<TimeOnly>(type: "time", nullable: false),
+                    BreakEnd = table.Column<TimeOnly>(type: "time", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -1,9 +1,12 @@
-﻿namespace WarehouseTracker.Api.Models
+﻿using WarehouseTracker.Api.Enums;
+using WarehouseTracker.Domain.Enums;
+
+namespace WarehouseTracker.Api.Models
 {
     public class BreakRuleDTO
     {
-        public string BreakType { get; set; } = null!;
-        public int StartAfterMinutes { get; set; }
-        public int DurationMinutes { get; set; }
+        public BreakTypes BreakType { get; set; }
+        public TimeOnly BreakStart { get; set; }
+        public TimeOnly BreakEnd { get; set; }
     }
 }

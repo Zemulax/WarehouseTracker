@@ -12,7 +12,7 @@ using WarehouseTracker.Infrastructure;
 namespace WarehouseTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(WarehouseTrackerDbContext))]
-    [Migration("20260217232411_FullTest")]
+    [Migration("20260218232323_FullTest")]
     partial class FullTest
     {
         /// <inheritdoc />
@@ -66,14 +66,13 @@ namespace WarehouseTracker.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BreakType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<TimeOnly>("BreakEnd")
+                        .HasColumnType("time");
 
-                    b.Property<int>("DurationMinutes")
-                        .HasColumnType("int");
+                    b.Property<TimeOnly>("BreakStart")
+                        .HasColumnType("time");
 
-                    b.Property<int>("StartAfterMinutes")
+                    b.Property<int>("BreakType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

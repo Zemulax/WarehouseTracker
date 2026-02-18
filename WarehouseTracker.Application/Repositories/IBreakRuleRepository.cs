@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WarehouseTracker.Domain;
+using WarehouseTracker.Domain.Enums;
 
 namespace WarehouseTracker.Application.Repositories
 {
@@ -11,6 +12,7 @@ namespace WarehouseTracker.Application.Repositories
     {
         Task AddAsync(BreakRule breakRule);
         Task<BreakRule> GetBreakRule();
+        Task<BreakRule?> GetBreakRuleByType(BreakTypes breakType);
 
         Task SaveChangesAsync();
     }
