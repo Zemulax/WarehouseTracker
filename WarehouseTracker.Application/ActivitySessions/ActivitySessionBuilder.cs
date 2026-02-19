@@ -16,7 +16,12 @@ public class ActivitySessionBuilder : IActivitySessionBuilder
 
         foreach (var evt in orderedEvents)
         {
-            switch (evt.EventType)
+            EventTypes eventTypes;
+
+            eventTypes = (EventTypes)evt.EventType;
+
+
+            switch (eventTypes)
             {
                 case EventTypes.CheckedIntoDepartment:
                     CloseIfOpen(evt.TimestampUtc, ref openSession, sessions);

@@ -69,7 +69,7 @@ public class BreakSchedulerService : BackgroundService
 
                 if (!breakStartExists && Math.Abs((now - breakStart).TotalSeconds) < 60)
                 {
-                    _logger.LogInformation($"Triggering break start for {shift.ColleagueId} at {now}");
+                    _logger.LogInformation($" ====================Triggering break start for {shift.ColleagueId} at {now} ========================");
                     await eventService.CreateBreakStartedEventAsync(shift);
                 }
 
@@ -80,7 +80,7 @@ public class BreakSchedulerService : BackgroundService
 
                 if (!breakEndExists && Math.Abs((now - breakEnd).TotalSeconds) < 60)
                 {
-                    _logger.LogInformation($"Triggering break end for {shift.ColleagueId} at {now}");
+                    _logger.LogInformation($"=====================Triggering break end for {shift.ColleagueId} at {now}=================");
                     await eventService.CreateBreakEndedEventAsync(shift);
                 }
             }

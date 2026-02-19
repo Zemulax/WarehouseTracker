@@ -12,7 +12,7 @@ using WarehouseTracker.Infrastructure;
 namespace WarehouseTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(WarehouseTrackerDbContext))]
-    [Migration("20260219220719_FullTest")]
+    [Migration("20260219223043_FullTest")]
     partial class FullTest
     {
         /// <inheritdoc />
