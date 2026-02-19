@@ -22,6 +22,11 @@ namespace WarehouseTracker.Application.Repositories
             await _dbContext.BreakRules.AddAsync(breakRule);
         }
 
+        public async Task<List<BreakRule>> GetAllBreakRules()
+        {
+            return await _dbContext.BreakRules.ToListAsync();
+        }
+
         public async Task<BreakRule> GetBreakRule()
         {
             return await _dbContext.BreakRules.FirstAsync();
@@ -36,6 +41,22 @@ namespace WarehouseTracker.Application.Repositories
         public async Task SaveChangesAsync()
         {
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(BreakRule newBreakRule)
+        {
+            var existing = await _dbContext.BreakRules
+         .FirstOrDefaultAsync(x => x.BreakType == newBreakRule.BreakType);
+
+            if (existing == null)
+                throw new Exception("Break rule not found");
+
+            existing.BreakStart = newBreakRule.BreakStart;
+            existing.BreakEnd = newBreakRule.BreakEnd;
+
+            _dbContext.BreakRules.Add(existing);
+            await _dbContext.SaveChangesAsync();
+
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WarehouseTracker.Api.Enums;
 
 namespace WarehouseTracker.Domain
 {
@@ -12,11 +13,11 @@ namespace WarehouseTracker.Domain
 
         public string ColleagueId { get; set; } = null!;
 
-        public string DepartmentCode { get; set; } = null!;
+        public string? DepartmentCode { get; set; }
 
         public int ShiftAssignmentId { get; set; }
 
-        public string EventType { get; set; } = null!;
+        public EventTypes EventType { get; set; }
 
         public DateTimeOffset TimestampUtc { get; set; }
 

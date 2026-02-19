@@ -1,46 +1,37 @@
-﻿using WarehouseTracker.Application.ActivitySessions;
+﻿using WarehouseTracker.Api.Enums;
+using WarehouseTracker.Application.ActivitySessions;
 using WarehouseTracker.Domain;
 
 public class ActivitySessionBuilder : IActivitySessionBuilder
 {
-    public List<ActivitySession> Build(
-        ShiftAssignment shift,
-        IReadOnlyList<Event> events)
+    public List<ActivitySession> Build(ShiftAssignment shift, IReadOnlyList<Event> events)
     {
         var sessions = new List<ActivitySession>();
 
         if (events == null || events.Count == 0)
             return sessions;
 
-        var orderedEvents = events
-            .OrderBy(e => e.TimestampUtc)
-            .ToList();
-
+        var orderedEvents = events.OrderBy(e => e.TimestampUtc).ToList();
         ActivitySession? openSession = null;
 
         foreach (var evt in orderedEvents)
         {
             switch (evt.EventType)
             {
-                case "CheckedIntoDepartment":
-
+                case EventTypes.CheckedIntoDepartment:
                     CloseIfOpen(evt.TimestampUtc, ref openSession, sessions);
-
                     openSession = new ActivitySession
                     {
                         ColleagueId = evt.ColleagueId,
                         ShiftAssignmentId = shift.Id,
-                        DepartmentId = evt.Id,
+                        DepartmentId = evt.Id, // Assuming evt.Id is DepartmentId?
                         SessionType = "Active",
                         SessionStart = evt.TimestampUtc
                     };
-
                     break;
 
-                case "BreakStarted":
-
+                case EventTypes.BreakStarted:
                     CloseIfOpen(evt.TimestampUtc, ref openSession, sessions);
-
                     openSession = new ActivitySession
                     {
                         ColleagueId = evt.ColleagueId,
@@ -49,44 +40,39 @@ public class ActivitySessionBuilder : IActivitySessionBuilder
                         SessionType = "Break",
                         SessionStart = evt.TimestampUtc
                     };
-
                     break;
 
-                case "BreakEnded":
+                case EventTypes.BreakEnded:
                     CloseIfOpen(evt.TimestampUtc, ref openSession, sessions);
-                    
                     var lastDept = sessions.LastOrDefault(s => s.SessionType == "Active")?.DepartmentId;
-                    
-   
-                        openSession = new ActivitySession
-                        {
-                            ColleagueId = evt.ColleagueId,
-                            ShiftAssignmentId = shift.Id,
-                            DepartmentId = lastDept,
-                            SessionType = "Active",
-                            SessionStart = evt.TimestampUtc
-                        }; 
-                        break;
-                    
+                    openSession = new ActivitySession
+                    {
+                        ColleagueId = evt.ColleagueId,
+                        ShiftAssignmentId = shift.Id,
+                        DepartmentId = lastDept,
+                        SessionType = "Active",
+                        SessionStart = evt.TimestampUtc
+                    };
+                    break;
 
-                case "ClockedOff":
-
+                case EventTypes.ShiftEnded:
                     CloseIfOpen(evt.TimestampUtc, ref openSession, sessions);
                     openSession = null;
-
                     break;
             }
         }
 
-        // Close remaining session at shift end
+        // ✅ FIX: If there's an open session (ongoing break or active work), add it!
         if (openSession != null)
         {
-            openSession.SessionEnd = shift.ShiftEnd;
+            // For ongoing sessions, set SessionEnd to now (or shift end if you prefer)
+            openSession.SessionEnd = DateTimeOffset.UtcNow; // or shift.ShiftEnd
             sessions.Add(openSession);
         }
 
-        return sessions;
+        return sessions.OrderBy(s => s.SessionStart).ToList();
     }
+
 
     private static void CloseIfOpen(
         DateTimeOffset timestamp,

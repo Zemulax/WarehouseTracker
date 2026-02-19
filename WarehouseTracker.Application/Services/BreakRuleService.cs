@@ -21,6 +21,11 @@ namespace WarehouseTracker.Application.Services
             await _repository.SaveChangesAsync();
         }
 
+        public async Task<List<BreakRule>> GetAllBreakRules()
+        {
+           return await _repository.GetAllBreakRules();
+        }
+
         public async Task<BreakRule?> GetBreakByType(BreakTypes breakType)
         {
             return await _repository.GetBreakRuleByType(breakType);
@@ -31,6 +36,10 @@ namespace WarehouseTracker.Application.Services
             return await _repository.GetBreakRule();
         }
 
-       
+        public Task UpdateAsync(BreakRule newBreakRule)
+        {
+            _repository.UpdateAsync(newBreakRule);
+            return Task.CompletedTask;
+        }
     }
 }

@@ -10,7 +10,8 @@ namespace WarehouseTracker.Application.Services
     public interface IEventService
     {
         Task CreateEventAsync(Event request);
-
         Task<List<Event>> GetEventsByShiftAsync(int shiftAssignmentId);
+        Task CreateBreakStartedEventAsync(ShiftAssignment shift);
+        Task CreateBreakEndedEventAsync(ShiftAssignment shift);
     }
 }

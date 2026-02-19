@@ -33,5 +33,10 @@ namespace WarehouseTracker.Application.Services
         {
             return _repository.GetActiveShiftAsync(colleagueId, timeStamp);
         }
+
+        public async Task<List<ShiftAssignment>>GetShiftsAsync(DateTimeOffset now)
+        {
+            return await _repository.GetShiftsAsync(now);
+        }
     }
 }

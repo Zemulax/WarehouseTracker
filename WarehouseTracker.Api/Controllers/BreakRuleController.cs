@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WarehouseTracker.Api.Enums;
 using WarehouseTracker.Api.Models;
 using WarehouseTracker.Application.Services;
+using WarehouseTracker.Domain;
 using WarehouseTracker.Domain.Enums;
 
 namespace WarehouseTracker.Api.Controllers
@@ -58,6 +59,18 @@ namespace WarehouseTracker.Api.Controllers
             };
             return(getBreak);
 
+        }
+        [HttpPut]
+        public async Task<IActionResult>UpdateBreak(BreakRuleDTO breakRuleDTO)
+        {
+            var breakDomain = new BreakRule
+            {
+                BreakEnd = breakRuleDTO.BreakEnd,
+                BreakType = breakRuleDTO.BreakType,
+                BreakStart = breakRuleDTO.BreakStart,
+            };
+           await  _breakRuleService.UpdateAsync(breakDomain);
+            return (Ok("Break Updated!"));
         }
 
     }

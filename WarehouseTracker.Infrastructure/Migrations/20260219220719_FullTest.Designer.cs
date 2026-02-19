@@ -12,7 +12,7 @@ using WarehouseTracker.Infrastructure;
 namespace WarehouseTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(WarehouseTrackerDbContext))]
-    [Migration("20260218232323_FullTest")]
+    [Migration("20260219220719_FullTest")]
     partial class FullTest
     {
         /// <inheritdoc />
@@ -150,12 +150,10 @@ namespace WarehouseTracker.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DepartmentCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("EventType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("EventType")
+                        .HasColumnType("int");
 
                     b.Property<int>("ShiftAssignmentId")
                         .HasColumnType("int");

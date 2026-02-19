@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WarehouseTracker.Api.Enums;
 using WarehouseTracker.Application.ActivitySessions;
 using WarehouseTracker.Application.Repositories;
 using WarehouseTracker.Domain;
+using WarehouseTracker.Domain.Enums;
 
 namespace WarehouseTracker.Application.Services
 {
@@ -75,6 +77,33 @@ namespace WarehouseTracker.Application.Services
 
         }
 
+        public async Task CreateBreakStartedEventAsync(ShiftAssignment shift)
+        {
+            var evt = new Event
+            {
+                ColleagueId = shift.ColleagueId,
+                EventType = EventTypes.BreakStarted,
+                TimestampUtc = DateTimeOffset.UtcNow, // ✅ Fixed: Was DateTime.Now
+                Source = "System"
+            };
+            await _eventRepository.AddAsync(evt);
+            await _eventRepository.SaveChangesAsync();
+            await _activitySessionRebuilder.RebuildForAsync(shift.Id);
+        }
+
+        public async Task CreateBreakEndedEventAsync(ShiftAssignment shift)
+        {
+            var evt = new Event
+            {
+                ColleagueId = shift.ColleagueId,
+                EventType = EventTypes.BreakEnded,
+                TimestampUtc = DateTimeOffset.UtcNow, // ✅ Fixed: Was DateTime.Now
+                Source = "System"
+            };
+            await _eventRepository.AddAsync(evt);
+            await _eventRepository.SaveChangesAsync();
+            await _activitySessionRebuilder.RebuildForAsync(shift.Id);
+        }
         public async Task<List<Event>> GetEventsByShiftAsync(int shiftAssignmentId)
         {
             return await _eventRepository.GetByShiftAsync(shiftAssignmentId);

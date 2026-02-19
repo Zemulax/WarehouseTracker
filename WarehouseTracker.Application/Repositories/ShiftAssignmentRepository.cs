@@ -39,6 +39,13 @@ namespace WarehouseTracker.Application.Repositories
 
         }
 
+        public async Task<List<ShiftAssignment>> GetShiftsAsync(DateTimeOffset now)
+        {
+            return await _dbContext.ShiftAssignments
+                .Where(s=> s.ShiftStart <= now && s.ShiftEnd >= now)
+                .ToListAsync();
+        }
+
         public async Task SaveChangesAsync()
         {
             await _dbContext.SaveChangesAsync();

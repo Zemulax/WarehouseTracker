@@ -46,6 +46,8 @@ namespace WarehouseTracker.Api
             builder.Services.AddScoped<IActivitySessionBuilder, ActivitySessionBuilder>();
             builder.Services.AddScoped<IActivitySessionRebuilder, ActivitySessionRebuilder>();
 
+            builder.Services.AddHostedService<BreakSchedulerService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

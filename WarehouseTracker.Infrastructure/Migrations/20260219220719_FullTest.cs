@@ -83,9 +83,9 @@ namespace WarehouseTracker.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ColleagueId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DepartmentCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DepartmentCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShiftAssignmentId = table.Column<int>(type: "int", nullable: false),
-                    EventType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EventType = table.Column<int>(type: "int", nullable: false),
                     TimestampUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Source = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },

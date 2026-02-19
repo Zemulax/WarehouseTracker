@@ -11,7 +11,8 @@ namespace WarehouseTracker.Application.Repositories
     {
         Task AddAsync(ShiftAssignment shiftAssignment);
         Task<ShiftAssignment?> GeByIdAsync(int shiftId);
-        Task <ShiftAssignment?>GetActiveShiftAsync(string colleagueId, DateTimeOffset timeStamp);        
+        Task <ShiftAssignment?>GetActiveShiftAsync(string colleagueId, DateTimeOffset timeStamp);
+        Task<List<ShiftAssignment>> GetShiftsAsync(DateTimeOffset now);
         Task SaveChangesAsync();
     }
 }

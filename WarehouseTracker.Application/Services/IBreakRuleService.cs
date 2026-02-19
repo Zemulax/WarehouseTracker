@@ -13,6 +13,8 @@ namespace WarehouseTracker.Application.Services
         Task AddAsync(BreakRule breakRule);
         Task<BreakRule?> GetBreakRule();
         Task<BreakRule?> GetBreakByType(BreakTypes breakType);
+        Task UpdateAsync(BreakRule newBreakRule);
+        Task<List<BreakRule>> GetAllBreakRules();
 
 
     }
