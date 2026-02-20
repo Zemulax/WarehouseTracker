@@ -49,10 +49,11 @@ public class BreakSchedulerService : BackgroundService
 
         foreach (var shift in activeShifts)
         {
-            var existingEvents = await eventService.GetEventsByShiftAsync(shift.Id);
-
             foreach (var breakRule in breakRules)
             {
+                // ✅ Fetch INSIDE the inner loop so it's always fresh
+                var existingEvents = await eventService.GetEventsByShiftAsync(shift.Id);
+
                 var shiftDate = shift.ShiftStart.Date;
                 var breakStart = new DateTimeOffset(shiftDate.Year, shiftDate.Month, shiftDate.Day,
                     breakRule.BreakStart.Hour, breakRule.BreakStart.Minute, 0, TimeSpan.Zero);
@@ -62,25 +63,22 @@ public class BreakSchedulerService : BackgroundService
                 if (breakStart < shift.ShiftStart) breakStart = breakStart.AddDays(1);
                 if (breakEnd < shift.ShiftStart) breakEnd = breakEnd.AddDays(1);
 
-                // ✅ FIXED: Check for BreakStarted (not BreakEnded!)
                 var breakStartExists = existingEvents.Any(e =>
                     e.EventType == EventTypes.BreakStarted &&
                     Math.Abs((e.TimestampUtc - breakStart).TotalMinutes) < 1);
 
-                if (!breakStartExists && Math.Abs((now - breakStart).TotalSeconds) < 60)
+                // ✅ Tighten window to less than 30s (your tick interval) to avoid double-fire
+                if (!breakStartExists && Math.Abs((now - breakStart).TotalSeconds) < 29)
                 {
-                    _logger.LogInformation($" ====================Triggering break start for {shift.ColleagueId} at {now} ========================");
                     await eventService.CreateBreakStartedEventAsync(shift);
                 }
 
-                // Check if break end already exists
                 var breakEndExists = existingEvents.Any(e =>
                     e.EventType == EventTypes.BreakEnded &&
                     Math.Abs((e.TimestampUtc - breakEnd).TotalMinutes) < 1);
 
-                if (!breakEndExists && Math.Abs((now - breakEnd).TotalSeconds) < 60)
+                if (!breakEndExists && Math.Abs((now - breakEnd).TotalSeconds) < 29)
                 {
-                    _logger.LogInformation($"=====================Triggering break end for {shift.ColleagueId} at {now}=================");
                     await eventService.CreateBreakEndedEventAsync(shift);
                 }
             }

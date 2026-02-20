@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WarehouseTracker.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class FullTest : Migration
+    public partial class Testing : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

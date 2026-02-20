@@ -12,8 +12,8 @@ using WarehouseTracker.Infrastructure;
 namespace WarehouseTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(WarehouseTrackerDbContext))]
-    [Migration("20260219223043_FullTest")]
-    partial class FullTest
+    [Migration("20260219230528_Testing")]
+    partial class Testing
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

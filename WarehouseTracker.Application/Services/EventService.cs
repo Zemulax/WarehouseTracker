@@ -56,22 +56,21 @@ namespace WarehouseTracker.Application.Services
                     throw new Exception("Department not found");
 
                 departmentCode = dept.DeparmentCode;
-
-                // 4. Create event
-                var evt = new Event
-                {
-                    ColleagueId = colleague.ColleagueId,
-                    DepartmentCode = departmentCode,
-                    ShiftAssignmentId = shift.Id,
-                    EventType = request.EventType,
-                    TimestampUtc = request.TimestampUtc,
-                    Source = "User"
-                };
-
-                await _eventRepository.AddAsync(evt);
-                await _eventRepository.SaveChangesAsync();
+               
             }
+            // 4. Create event
+            var evt = new Event
+            {
+                ColleagueId = colleague.ColleagueId,
+                DepartmentCode = departmentCode,
+                ShiftAssignmentId = shift.Id,
+                EventType = request.EventType,
+                TimestampUtc = request.TimestampUtc,
+                Source = "User"
+            };
 
+            await _eventRepository.AddAsync(evt);
+            await _eventRepository.SaveChangesAsync();
             // 5. Rebuild sessions
             await _activitySessionRebuilder.RebuildForAsync(shift.Id);
 
@@ -82,8 +81,10 @@ namespace WarehouseTracker.Application.Services
             var evt = new Event
             {
                 ColleagueId = shift.ColleagueId,
+                ShiftAssignmentId = shift.Id,
                 EventType = EventTypes.BreakStarted,
-                TimestampUtc = DateTimeOffset.UtcNow, // ✅ Fixed: Was DateTime.Now
+                TimestampUtc = DateTimeOffset.UtcNow,
+                
                 Source = "System"
             };
             await _eventRepository.AddAsync(evt);
@@ -96,6 +97,7 @@ namespace WarehouseTracker.Application.Services
             var evt = new Event
             {
                 ColleagueId = shift.ColleagueId,
+                ShiftAssignmentId = shift.Id,
                 EventType = EventTypes.BreakEnded,
                 TimestampUtc = DateTimeOffset.UtcNow, // ✅ Fixed: Was DateTime.Now
                 Source = "System"
