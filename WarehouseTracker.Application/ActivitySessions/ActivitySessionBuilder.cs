@@ -29,7 +29,7 @@ public class ActivitySessionBuilder : IActivitySessionBuilder
                     {
                         ColleagueId = evt.ColleagueId,
                         ShiftAssignmentId = shift.Id,
-                        DepartmentId = evt.Id, // Assuming evt.Id is DepartmentId?
+                        DepartmentId = evt.Id,
                         SessionType = "Active",
                         SessionStart = evt.TimestampUtc
                     };

@@ -21,7 +21,7 @@ namespace WarehouseTracker.Application.Services
         {
            var coll = await _colleagueRepository.GetByIdAsync(colleagueId);
             if (coll == null) { 
-            throw new Exception() { };
+            throw new Exception("Colleague does not exist") { };
             }
             return coll;
         }
