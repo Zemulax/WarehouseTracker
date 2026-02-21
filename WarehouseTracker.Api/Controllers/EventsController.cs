@@ -18,7 +18,7 @@ namespace WarehouseTracker.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEvent(EventDTO request)
+        public async Task<IActionResult> CreateEvent(EventDto request)
         {
             var eventDomain = new Event
             {

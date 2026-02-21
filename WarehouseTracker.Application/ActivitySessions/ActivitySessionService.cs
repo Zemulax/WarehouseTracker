@@ -18,9 +18,9 @@ namespace WarehouseTracker.Application.ActivitySessions
         }
         
 
-        public async Task<List<ActivitySession>> GetByShiftAsync(int? ShiftId, string? colleagueId)
+        public async Task<List<ActivitySession>> GetByShiftAsync(int? shiftId, string? colleagueId)
         {
-            return await _activitySessionRepository.GetByShiftAsync(ShiftId, colleagueId);
+            return await _activitySessionRepository.GetByShiftAsync(shiftId, colleagueId);
         }
     }
 }

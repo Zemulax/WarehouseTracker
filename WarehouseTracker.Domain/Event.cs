@@ -15,7 +15,7 @@ namespace WarehouseTracker.Domain
 
         public string? DepartmentCode { get; set; }
 
-        public int ShiftAssignmentId { get; set; }
+        public int TaskAssignmentId { get; set; }
 
         public EventTypes EventType { get; set; }
 

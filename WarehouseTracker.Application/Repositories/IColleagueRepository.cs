@@ -10,7 +10,7 @@ namespace WarehouseTracker.Application.Repositories
     public interface IColleagueRepository
     {
         Task AddAsync(Colleague colleague);
-        Task<Colleague?> GetByIdAsync(string ColleagueId);
+        Task<Colleague?> GetByIdAsync(string colleagueId);
         Task<List<Colleague>> GetAll();
         Task SaveChangesAsync();
     }

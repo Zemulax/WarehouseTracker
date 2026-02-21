@@ -15,7 +15,7 @@ namespace WarehouseTracker.Application.ActivitySessions
     public interface IActivitySessionBuilder
     {
         List<ActivitySession> Build(
-            ShiftAssignment shift,
+            TaskAssignment task,
             IReadOnlyList<Event> events);
     }
 }

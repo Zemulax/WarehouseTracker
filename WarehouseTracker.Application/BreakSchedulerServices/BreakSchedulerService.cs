@@ -40,7 +40,7 @@ public class BreakSchedulerService : BackgroundService
         using var scope = _scopeFactory.CreateScope();
 
         var breakService = scope.ServiceProvider.GetRequiredService<IBreakRuleService>();
-        var shiftService = scope.ServiceProvider.GetRequiredService<IShiftAssignmentService>();
+        var shiftService = scope.ServiceProvider.GetRequiredService<ITaskAssignmentService>();
         var eventService = scope.ServiceProvider.GetRequiredService<IEventService>();
 
         var now = DateTimeOffset.UtcNow;

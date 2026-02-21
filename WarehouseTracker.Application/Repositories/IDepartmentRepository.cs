@@ -7,7 +7,7 @@ using WarehouseTracker.Domain;
 
 namespace WarehouseTracker.Application.Repositories
 {
-    public interface IDepartmenRepository
+    public interface IDepartmentRepository
     {
         Task AddAsync(Department department);
         Task<Department?> GetByCodeAsync(string code);

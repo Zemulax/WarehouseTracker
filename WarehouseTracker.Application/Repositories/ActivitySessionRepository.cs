@@ -26,7 +26,7 @@ namespace WarehouseTracker.Application.Repositories
         public async Task DeleteShiftAsync(int shiftId)
         {
             var sessions = _dbContext.ActivitySessions
-                .Where(s => s.ShiftAssignmentId == shiftId);
+                .Where(s => s.TaskAssignmentId == shiftId);
 
             _dbContext.ActivitySessions.RemoveRange(sessions);
             await Task.CompletedTask;
@@ -35,7 +35,7 @@ namespace WarehouseTracker.Application.Repositories
         public async Task<List<ActivitySession>> GetByShiftAsync(int shiftId)
         {
             return await _dbContext.ActivitySessions
-            .Where(a => a.ShiftAssignmentId == shiftId)
+            .Where(a => a.TaskAssignmentId == shiftId)
             .OrderBy(s => s.SessionStart)
             .ToListAsync();
         }
@@ -43,7 +43,7 @@ namespace WarehouseTracker.Application.Repositories
         public async Task<List<ActivitySession>> GetByShiftAsync(int? shiftId, string? colleagueId)
         {
             return await _dbContext.ActivitySessions
-            .Where(a => a.ShiftAssignmentId == shiftId 
+            .Where(a => a.TaskAssignmentId == shiftId 
             || a.ColleagueId == colleagueId
             )
             .OrderBy(s => s.SessionStart)

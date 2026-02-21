@@ -23,7 +23,7 @@ namespace WarehouseTracker.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(BreakRuleDTO breakRuleDTO)
+        public async Task<IActionResult> Create(BreakRuleDto breakRuleDTO)
         {
             var existing = await _breakRuleService.GetBreakByType(breakRuleDTO.BreakType);
             if (existing == null)
@@ -45,13 +45,13 @@ namespace WarehouseTracker.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<BreakRuleDTO?> GetBreakByType(BreakTypes breakType)
+        public async Task<BreakRuleDto?> GetBreakByType(BreakTypes breakType)
         {
           var existing = await _breakRuleService.GetBreakByType(breakType);
             if (existing == null) { 
               return null;
             }
-            var getBreak = new BreakRuleDTO
+            var getBreak = new BreakRuleDto
             {
                 BreakType = existing.BreakType,
                 BreakStart = existing.BreakStart,
@@ -61,13 +61,13 @@ namespace WarehouseTracker.Api.Controllers
 
         }
         [HttpPut]
-        public async Task<IActionResult>UpdateBreak(BreakRuleDTO breakRuleDTO)
+        public async Task<IActionResult>UpdateBreak(BreakRuleDto breakRuleDto)
         {
             var breakDomain = new BreakRule
             {
-                BreakEnd = breakRuleDTO.BreakEnd,
-                BreakType = breakRuleDTO.BreakType,
-                BreakStart = breakRuleDTO.BreakStart,
+                BreakEnd = breakRuleDto.BreakEnd,
+                BreakType = breakRuleDto.BreakType,
+                BreakStart = breakRuleDto.BreakStart,
             };
            await  _breakRuleService.UpdateAsync(breakDomain);
             return (Ok("Break Updated!"));

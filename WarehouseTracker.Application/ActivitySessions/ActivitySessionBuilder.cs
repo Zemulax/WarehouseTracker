@@ -4,7 +4,7 @@ using WarehouseTracker.Domain;
 
 public class ActivitySessionBuilder : IActivitySessionBuilder
 {
-    public List<ActivitySession> Build(ShiftAssignment shift, IReadOnlyList<Event> events)
+    public List<ActivitySession> Build(TaskAssignment task, IReadOnlyList<Event> events)
     {
         var sessions = new List<ActivitySession>();
 
@@ -28,7 +28,7 @@ public class ActivitySessionBuilder : IActivitySessionBuilder
                     openSession = new ActivitySession
                     {
                         ColleagueId = evt.ColleagueId,
-                        ShiftAssignmentId = shift.Id,
+                        TaskAssignmentId = task.Id,
                         DepartmentId = evt.Id,
                         SessionType = "Active",
                         SessionStart = evt.TimestampUtc
@@ -40,7 +40,7 @@ public class ActivitySessionBuilder : IActivitySessionBuilder
                     openSession = new ActivitySession
                     {
                         ColleagueId = evt.ColleagueId,
-                        ShiftAssignmentId = shift.Id,
+                        TaskAssignmentId = task.Id,
                         DepartmentId = null,
                         SessionType = "Break",
                         SessionStart = evt.TimestampUtc
@@ -53,7 +53,7 @@ public class ActivitySessionBuilder : IActivitySessionBuilder
                     openSession = new ActivitySession
                     {
                         ColleagueId = evt.ColleagueId,
-                        ShiftAssignmentId = shift.Id,
+                        TaskAssignmentId = task.Id,
                         DepartmentId = lastDept,
                         SessionType = "Active",
                         SessionStart = evt.TimestampUtc
@@ -70,8 +70,8 @@ public class ActivitySessionBuilder : IActivitySessionBuilder
         // ✅ FIX: If there's an open session (ongoing break or active work), add it!
         if (openSession != null)
         {
-            // For ongoing sessions, set SessionEnd to now (or shift end if you prefer)
-            openSession.SessionEnd = DateTimeOffset.UtcNow; // or shift.ShiftEnd
+            // For ongoing sessions, set SessionEnd to now (or task end if you prefer)
+            openSession.SessionEnd = DateTimeOffset.UtcNow; // or task.ShiftEnd
             sessions.Add(openSession);
         }
 

@@ -3,7 +3,7 @@ using WarehouseTracker.Domain.Enums;
 
 namespace WarehouseTracker.Api.Models
 {
-    public class BreakRuleDTO
+    public class BreakRuleDto
     {
         public BreakTypes BreakType { get; set; }
         public TimeOnly BreakStart { get; set; }

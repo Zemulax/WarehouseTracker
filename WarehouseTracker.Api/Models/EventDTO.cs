@@ -2,7 +2,7 @@
 
 namespace WarehouseTracker.Api.Models
 {
-    public class EventDTO
+    public class EventDto
     {
 
         public string ColleagueId { get; set; } = null!;

@@ -18,12 +18,12 @@ namespace WarehouseTracker.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateDepartment(DepartmentDTO department)
+        public async Task<IActionResult> CreateDepartment(DepartmentDto department)
         {
             var domainDepartment = new Department   
             {
                 DepartmentName = department.DepartmentName,
-                DeparmentCode = department.DeparmentCode,
+                DepartmentCode = department.DepartmentCode,
                 DepartmentGroupCode = department.DepartmentGroupCode,
             };
 
@@ -32,29 +32,29 @@ namespace WarehouseTracker.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<List<DepartmentDTO>> GetAll() { 
+        public async Task<List<DepartmentDto>> GetAll() { 
         
          var domainDepartments = await _departmentService.GetAllAsync();
 
-            return domainDepartments.Select(d => new DepartmentDTO
+            return domainDepartments.Select(d => new DepartmentDto
             { 
                 DepartmentName = d.DepartmentName,
-                DeparmentCode = d.DeparmentCode,
+                DepartmentCode = d.DepartmentCode,
                 DepartmentGroupCode= d.DepartmentGroupCode,
             }).ToList();
         }
 
         [HttpGet("{departmentCode}")]
-        public async Task<DepartmentDTO?> GetDepartmentAsync(string departmentCode)
+        public async Task<DepartmentDto?> GetDepartmentAsync(string departmentCode)
         {
             var domainDepartment = await _departmentService.GetByCodeAsync(departmentCode);
 
             if (domainDepartment != null)
             {
-                return new DepartmentDTO
+                return new DepartmentDto
                 {
                     DepartmentName = domainDepartment.DepartmentName,
-                    DeparmentCode = domainDepartment.DeparmentCode,
+                    DepartmentCode = domainDepartment.DepartmentCode,
                     DepartmentGroupCode = domainDepartment.DepartmentGroupCode
                 };
             }

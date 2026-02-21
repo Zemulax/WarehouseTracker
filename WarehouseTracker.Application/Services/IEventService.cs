@@ -11,7 +11,7 @@ namespace WarehouseTracker.Application.Services
     {
         Task CreateEventAsync(Event request);
         Task<List<Event>> GetEventsByShiftAsync(int shiftAssignmentId);
-        Task CreateBreakStartedEventAsync(ShiftAssignment shift);
-        Task CreateBreakEndedEventAsync(ShiftAssignment shift);
+        Task CreateBreakStartedEventAsync(TaskAssignment task);
+        Task CreateBreakEndedEventAsync(TaskAssignment task);
     }
 }

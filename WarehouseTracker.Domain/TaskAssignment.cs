@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WarehouseTracker.Domain
 {
-    public class ShiftAssignment
+    public class TaskAssignment
     {
         public int Id { get; set; }
         public string ColleagueId { get; set; } = null!;

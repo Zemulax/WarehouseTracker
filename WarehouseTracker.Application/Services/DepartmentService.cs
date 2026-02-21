@@ -10,49 +10,44 @@ namespace WarehouseTracker.Application.Services
 {
     public class DepartmentService : IDepartmentService
     {
-        private readonly IDepartmenRepository _departmenRepository;
+        private readonly IDepartmentRepository _departmentRepository;
 
-        public DepartmentService(IDepartmenRepository departmenRepository)
+        public DepartmentService(IDepartmentRepository departmentRepository)
         {
-            _departmenRepository = departmenRepository;
+            _departmentRepository = departmentRepository;
         }
 
         public async Task CreateAsync(Department request)
         {
-            var existing = await _departmenRepository.GetByCodeAsync(request.DeparmentCode);
+            var existing = await _departmentRepository.GetByCodeAsync(request.DepartmentCode);
             if (existing != null)
             {
                 throw new Exception("Department already esists");
             }
 
-            var NewDept = new Department
+            var newDept = new Department
             {
                 DepartmentName = request.DepartmentName,
-                DeparmentCode = request.DeparmentCode,
+                DepartmentCode = request.DepartmentCode,
                 DepartmentGroupCode = request.DepartmentGroupCode
 
             };
 
-            await _departmenRepository.AddAsync(NewDept);
-            await _departmenRepository.SaveChangeAsync();
+            await _departmentRepository.AddAsync(newDept);
+            await _departmentRepository.SaveChangeAsync();
         }
 
         public Task<List<Department>> GetAllAsync()
         {
-            return _departmenRepository.GetAllAsync();
+            return _departmentRepository.GetAllAsync();
         }
 
         public Task<Department?> GetByCodeAsync(string code)
         {
             
-            var dept = _departmenRepository.GetByCodeAsync(code);
+            var dept = _departmentRepository.GetByCodeAsync(code);
 
-            if (dept != null)
-            {
-                return dept;
-            }
-
-            throw new ArgumentNullException("department code does not exist");
+            return dept;
 
         }
     }

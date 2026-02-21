@@ -8,17 +8,17 @@ using WarehouseTracker.Domain;
 
 namespace WarehouseTracker.Application.Services
 {
-    public class ShiftAssignmentService : IShiftAssignmentService
+    public class TaskAssignmentService : ITaskAssignmentService
     {
-        private readonly IShiftAssignmentRepository _repository;
-        public ShiftAssignmentService(IShiftAssignmentRepository shiftAssignmentRepository) {
+        private readonly ITaskAssignmentRepository _repository;
+        public TaskAssignmentService(ITaskAssignmentRepository taskAssignmentRepository) {
         
-        _repository = shiftAssignmentRepository;
+        _repository = taskAssignmentRepository;
         }
 
-        public async Task CreateAsync(ShiftAssignment assignment)
+        public async Task CreateAsync(TaskAssignment assignment)
         {
-            var shift = new ShiftAssignment
+            var shift = new TaskAssignment
             {
                 ColleagueId = assignment.ColleagueId,
                 ShiftStart = assignment.ShiftStart,
@@ -29,12 +29,12 @@ namespace WarehouseTracker.Application.Services
             await _repository.SaveChangesAsync();
         }
 
-        public Task<ShiftAssignment?> GetShiftActiveShiftAsync(string colleagueId, DateTimeOffset timeStamp)
+        public Task<TaskAssignment?> GetShiftActiveShiftAsync(string colleagueId, DateTimeOffset timeStamp)
         {
             return _repository.GetActiveShiftAsync(colleagueId, timeStamp);
         }
 
-        public async Task<List<ShiftAssignment>>GetShiftsAsync(DateTimeOffset now)
+        public async Task<List<TaskAssignment>>GetShiftsAsync(DateTimeOffset now)
         {
             return await _repository.GetShiftsAsync(now);
         }

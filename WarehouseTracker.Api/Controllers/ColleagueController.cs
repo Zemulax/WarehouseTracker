@@ -25,7 +25,7 @@ namespace WarehouseTracker.Api.Controllers
         }
 
         [HttpPost]
-        public async Task< IActionResult> CreateColleague(ColleagueDTO request)
+        public async Task< IActionResult> CreateColleague(ColleagueDto request)
         {
             var colleague = new Colleague
             {
@@ -42,11 +42,11 @@ namespace WarehouseTracker.Api.Controllers
         }
 
         [HttpGet("{colleagueId}")]
-        public async Task<ColleagueDTO> GetColleagueAsync(string colleagueId )
+        public async Task<ColleagueDto> GetColleagueAsync(string colleagueId )
         {
             var colleagueDomain =  await _colleagueService.GetColleagueById(colleagueId);
 
-            return new ColleagueDTO
+            return new ColleagueDto
             {
 
                 ColleagueId = colleagueDomain.ColleagueId,
@@ -59,11 +59,11 @@ namespace WarehouseTracker.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<List<ColleagueDTO>> GetColleaguesAsync()
+        public async Task<List<ColleagueDto>> GetColleaguesAsync()
         {
             var colleagues = await _colleagueService.RetrieveColleagueAsync();
 
-            return colleagues.Select(c => new ColleagueDTO{
+            return colleagues.Select(c => new ColleagueDto{
                 ColleagueId=c.ColleagueId,
                 FirstName=c.FirstName,
                 LastName=c.LastName,

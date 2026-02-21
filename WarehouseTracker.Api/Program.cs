@@ -28,8 +28,8 @@ namespace WarehouseTracker.Api
 
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddScoped<IColleagueRepository, ColleagueRepository>();
-            builder.Services.AddScoped<IDepartmenRepository, DepartmentRepository>();
-            builder.Services.AddScoped<IShiftAssignmentRepository, ShiftAssignmentRepository>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<ITaskAssignmentRepository, TaskAssignmentRepository>();
             builder.Services.AddScoped<IBreakRuleRepository, BreakRuleRepository>();
             builder.Services.AddScoped<IEventRepository, EventRepository>();
             builder.Services.AddScoped<IActivitySessionRepository, ActivitySessionRepository>();
@@ -39,8 +39,8 @@ namespace WarehouseTracker.Api
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
             builder.Services.AddScoped<IEventService, EventService>();
             builder.Services.AddScoped<IActivitySessionService, ActivitySessionService>();
-            builder.Services.AddScoped<IShiftAssignmentService, ShiftAssignmentService>();
-            builder.Services.AddScoped<IShiftAssignmentService, ShiftAssignmentService>();
+            builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
+            builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
             builder.Services.AddScoped<IBreakRuleService, BreakRuleService>();
 
             builder.Services.AddScoped<IActivitySessionBuilder, ActivitySessionBuilder>();

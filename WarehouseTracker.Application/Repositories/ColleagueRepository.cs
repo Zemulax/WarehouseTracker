@@ -26,10 +26,10 @@ namespace WarehouseTracker.Application.Repositories
                
         }
 
-        public async Task<Colleague?> GetByIdAsync(string ColleagueId)
+        public async Task<Colleague?> GetByIdAsync(string colleagueId)      
         {
             return await _dbContext.Colleagues.SingleOrDefaultAsync
-                (c => c.ColleagueId == ColleagueId);
+                (c => c.ColleagueId == colleagueId);
         }
 
         public async Task SaveChangesAsync()

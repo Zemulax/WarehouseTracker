@@ -16,7 +16,7 @@ namespace WarehouseTracker.Application.Services
         private readonly IEventRepository _eventRepository;
         private readonly IColleagueService _colleagueService;
         private readonly IDepartmentService _departmentService;
-        private readonly IShiftAssignmentService _shiftService;
+        private readonly ITaskAssignmentService _taskService;
         private readonly IActivitySessionRebuilder _activitySessionRebuilder;
         
 
@@ -24,13 +24,13 @@ namespace WarehouseTracker.Application.Services
             IEventRepository eventRepository,
             IColleagueService colleagueService,
             IDepartmentService departmentService,
-            IShiftAssignmentService shiftService,
+            ITaskAssignmentService taskService,
             IActivitySessionRebuilder activitySessionRebuilder)
         {
             _eventRepository = eventRepository;
             _colleagueService = colleagueService;
             _departmentService = departmentService;
-            _shiftService = shiftService;
+            _taskService = taskService;
             _activitySessionRebuilder = activitySessionRebuilder;
         }
 
@@ -42,7 +42,7 @@ namespace WarehouseTracker.Application.Services
                 throw new Exception("Colleague not found");
 
             // 2. Resolve shift
-            var shift = await _shiftService.GetShiftActiveShiftAsync(colleague.ColleagueId, request.TimestampUtc );
+            var shift = await _taskService.GetShiftActiveShiftAsync(colleague.ColleagueId, request.TimestampUtc );
             Console.WriteLine(shift);
             if (shift == null)
                 throw new Exception("No active shift");
@@ -55,7 +55,7 @@ namespace WarehouseTracker.Application.Services
                 if (dept == null)
                     throw new Exception("Department not found");
 
-                departmentCode = dept.DeparmentCode;
+                departmentCode = dept.DepartmentCode;
                
             }
             // 4. Create event
@@ -63,7 +63,7 @@ namespace WarehouseTracker.Application.Services
             {
                 ColleagueId = colleague.ColleagueId,
                 DepartmentCode = departmentCode,
-                ShiftAssignmentId = shift.Id,
+                TaskAssignmentId = shift.Id,
                 EventType = request.EventType,
                 TimestampUtc = request.TimestampUtc,
                 Source = "User"
@@ -76,12 +76,12 @@ namespace WarehouseTracker.Application.Services
 
         }
 
-        public async Task CreateBreakStartedEventAsync(ShiftAssignment shift)
+        public async Task CreateBreakStartedEventAsync(TaskAssignment task)
         {
             var evt = new Event
             {
-                ColleagueId = shift.ColleagueId,
-                ShiftAssignmentId = shift.Id,
+                ColleagueId = task.ColleagueId,
+                TaskAssignmentId = task.Id,
                 EventType = EventTypes.BreakStarted,
                 TimestampUtc = DateTimeOffset.UtcNow,
                 
@@ -89,22 +89,22 @@ namespace WarehouseTracker.Application.Services
             };
             await _eventRepository.AddAsync(evt);
             await _eventRepository.SaveChangesAsync();
-            await _activitySessionRebuilder.RebuildForAsync(shift.Id);
+            await _activitySessionRebuilder.RebuildForAsync(task.Id);
         }
 
-        public async Task CreateBreakEndedEventAsync(ShiftAssignment shift)
+        public async Task CreateBreakEndedEventAsync(TaskAssignment task)
         {
             var evt = new Event
             {
-                ColleagueId = shift.ColleagueId,
-                ShiftAssignmentId = shift.Id,
+                ColleagueId = task.ColleagueId,
+                TaskAssignmentId = task.Id,
                 EventType = EventTypes.BreakEnded,
                 TimestampUtc = DateTimeOffset.UtcNow, // ✅ Fixed: Was DateTime.Now
                 Source = "System"
             };
             await _eventRepository.AddAsync(evt);
             await _eventRepository.SaveChangesAsync();
-            await _activitySessionRebuilder.RebuildForAsync(shift.Id);
+            await _activitySessionRebuilder.RebuildForAsync(task.Id);
         }
         public async Task<List<Event>> GetEventsByShiftAsync(int shiftAssignmentId)
         {

@@ -35,7 +35,7 @@ namespace WarehouseTracker.Application.Repositories
         public async Task<List<Event>> GetByShiftAsync(int shiftAssignmentId)
         {
             return await _dbContext.Events
-                .Where(e => e.ShiftAssignmentId == shiftAssignmentId)
+                .Where(e => e.TaskAssignmentId == shiftAssignmentId)
                 .OrderBy(e => e.TimestampUtc)
                 .ToListAsync();
         }

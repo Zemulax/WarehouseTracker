@@ -9,14 +9,14 @@ namespace WarehouseTracker.Application.ActivitySessions
 {
     public class ActivitySessionRebuilder : IActivitySessionRebuilder
     {
-        private readonly IShiftAssignmentRepository _shiftAssignmentRepository;
+        private readonly ITaskAssignmentRepository _taskAssignmentRepository;
         private readonly IEventRepository _eventRepository;
         private readonly IActivitySessionRepository _activitySessionRepository;
         private readonly IActivitySessionBuilder _activitySessionBuilder;
 
-        public ActivitySessionRebuilder(IShiftAssignmentRepository assignmentRepository, IEventRepository eventRepository, IActivitySessionRepository activitySessionRepository, IActivitySessionBuilder activitySessionBuilder)
+        public ActivitySessionRebuilder(ITaskAssignmentRepository assignmentRepository, IEventRepository eventRepository, IActivitySessionRepository activitySessionRepository, IActivitySessionBuilder activitySessionBuilder)
         {
-            _shiftAssignmentRepository = assignmentRepository;
+            _taskAssignmentRepository = assignmentRepository;
             _eventRepository = eventRepository;
             _activitySessionRepository = activitySessionRepository;
             _activitySessionBuilder = activitySessionBuilder;
@@ -24,7 +24,7 @@ namespace WarehouseTracker.Application.ActivitySessions
 
         public async Task RebuildForAsync(int shiftId)
         {
-            var shift = await _shiftAssignmentRepository.GeByIdAsync(shiftId);
+            var shift = await _taskAssignmentRepository.GeByIdAsync(shiftId);
             if (shift == null)
             {
                 throw new ArgumentNullException(nameof(shiftId));

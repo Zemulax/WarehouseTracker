@@ -10,26 +10,26 @@ using WarehouseTracker.Infrastructure;
 
 namespace WarehouseTracker.Application.Repositories
 {
-    public class ShiftAssignmentRepository : IShiftAssignmentRepository
+    public class TaskAssignmentRepository : ITaskAssignmentRepository
     {
         private readonly WarehouseTrackerDbContext _dbContext;
 
-        public ShiftAssignmentRepository(WarehouseTrackerDbContext dbContext)
+        public TaskAssignmentRepository(WarehouseTrackerDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-        public async Task AddAsync(ShiftAssignment shiftAssignment)
+        public async Task AddAsync(TaskAssignment taskAssignment)
         {
-            await _dbContext.ShiftAssignments.AddAsync(shiftAssignment);
+            await _dbContext.ShiftAssignments.AddAsync(taskAssignment);
         }
 
-        public async Task<ShiftAssignment?> GeByIdAsync(int shiftId)
+        public async Task<TaskAssignment?> GeByIdAsync(int shiftId)
         {
             return await _dbContext.ShiftAssignments.
                   SingleOrDefaultAsync(s => s.Id == shiftId);
         }
 
-        public async Task<ShiftAssignment?> GetActiveShiftAsync(string colleagueId, DateTimeOffset timeStamp)
+        public async Task<TaskAssignment?> GetActiveShiftAsync(string colleagueId, DateTimeOffset timeStamp)
         {
             return await _dbContext.ShiftAssignments
                 .FirstOrDefaultAsync(s =>
@@ -39,7 +39,7 @@ namespace WarehouseTracker.Application.Repositories
 
         }
 
-        public async Task<List<ShiftAssignment>> GetShiftsAsync(DateTimeOffset now)
+        public async Task<List<TaskAssignment>> GetShiftsAsync(DateTimeOffset now)
         {
             return await _dbContext.ShiftAssignments
                 .Where(s=> s.ShiftStart <= now && s.ShiftEnd >= now)

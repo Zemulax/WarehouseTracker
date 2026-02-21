@@ -5,7 +5,7 @@ using WarehouseTracker.Infrastructure;
 
 namespace WarehouseTracker.Application.Repositories
 {
-    public class DepartmentRepository : IDepartmenRepository
+    public class DepartmentRepository : IDepartmentRepository
     {
         private readonly WarehouseTrackerDbContext _dbContext;
 
@@ -26,7 +26,7 @@ namespace WarehouseTracker.Application.Repositories
         public async Task<Department?> GetByCodeAsync(string departmentCode)
         {
             return await _dbContext.Departments
-                .FirstOrDefaultAsync(d => d.DeparmentCode == departmentCode);
+                .FirstOrDefaultAsync(d => d.DepartmentCode == departmentCode);
         }
 
         public async Task SaveChangeAsync()
