@@ -23,27 +23,27 @@ namespace WarehouseTracker.Application.Repositories
             await _dbContext.ActivitySessions.AddRangeAsync(sessions);
         }
 
-        public async Task DeleteShiftAsync(int shiftId)
+        public async Task DeleteByWorkDayAsync(int workDayId)
         {
             var sessions = _dbContext.ActivitySessions
-                .Where(s => s.TaskAssignmentId == shiftId);
+                .Where(s => s.WorkDayId == workDayId);
 
             _dbContext.ActivitySessions.RemoveRange(sessions);
             await Task.CompletedTask;
         }
 
-        public async Task<List<ActivitySession>> GetByShiftAsync(int shiftId)
+        public async Task<List<ActivitySession>> GetByTaskAsync(int workId)
         {
             return await _dbContext.ActivitySessions
-            .Where(a => a.TaskAssignmentId == shiftId)
+            .Where(a => a.WorkDayId == workId)
             .OrderBy(s => s.SessionStart)
             .ToListAsync();
         }
 
-        public async Task<List<ActivitySession>> GetByShiftAsync(int? shiftId, string? colleagueId)
+        public async Task<List<ActivitySession>> GetByShiftAsync(int? workId, string? colleagueId)
         {
             return await _dbContext.ActivitySessions
-            .Where(a => a.TaskAssignmentId == shiftId 
+            .Where(a => a.WorkDayId == workId 
             || a.ColleagueId == colleagueId
             )
             .OrderBy(s => s.SessionStart)

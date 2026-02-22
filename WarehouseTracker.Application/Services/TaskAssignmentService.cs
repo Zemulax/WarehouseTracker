@@ -11,32 +11,47 @@ namespace WarehouseTracker.Application.Services
     public class TaskAssignmentService : ITaskAssignmentService
     {
         private readonly ITaskAssignmentRepository _repository;
+
         public TaskAssignmentService(ITaskAssignmentRepository taskAssignmentRepository) {
         
-        _repository = taskAssignmentRepository;
+            _repository = taskAssignmentRepository;
+
         }
 
         public async Task CreateAsync(TaskAssignment assignment)
         {
-            var shift = new TaskAssignment
+            var existingTask = await _repository.GetActiveTaskAsync(assignment.ColleagueId);
+            
+            if (existingTask != null)
+            {
+                throw new InvalidOperationException($"Colleague {assignment.ColleagueId} already has an active task.");
+            }
+
+            var newTask = new TaskAssignment
             {
                 ColleagueId = assignment.ColleagueId,
-                ShiftStart = assignment.ShiftStart,
-                ShiftEnd = assignment.ShiftEnd,
+                WorkDayId = assignment.WorkDayId,
+                DepartmentCode = assignment.DepartmentCode,
+                TaskStart = DateTimeOffset.UtcNow,
+                Status = "Active"
             };
+            
 
-            await _repository.AddAsync(shift);
+            await _repository.AddAsync(newTask);
             await _repository.SaveChangesAsync();
         }
 
-        public Task<TaskAssignment?> GetShiftActiveShiftAsync(string colleagueId, DateTimeOffset timeStamp)
+        public async Task EndTaskAsync(TaskAssignment taskAssignment)
         {
-            return _repository.GetActiveShiftAsync(colleagueId, timeStamp);
+            taskAssignment.TaskEnd = DateTimeOffset.UtcNow;
+            taskAssignment.Status = "Completed";
+            await _repository.UpdateAsync(taskAssignment);
+            await _repository.SaveChangesAsync();
         }
 
-        public async Task<List<TaskAssignment>>GetShiftsAsync(DateTimeOffset now)
+        public async Task<TaskAssignment?> GetActiveTaskAsync(string colleagueId)
         {
-            return await _repository.GetShiftsAsync(now);
+            return await _repository.GetActiveTaskAsync(colleagueId);
         }
     }
 }

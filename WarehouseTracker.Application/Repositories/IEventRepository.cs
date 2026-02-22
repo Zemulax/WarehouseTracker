@@ -11,7 +11,7 @@ namespace WarehouseTracker.Application.Repositories
     {
         Task AddAsync(Event evt);
 
-        Task<List<Event>> GetByShiftAsync(int shiftAssignmentId);
+        Task<List<Event>> GetByWorkDayAsync(int shiftAssignmentId);
 
         Task<List<Event>> GetByColleagueAsync(string colleagueId);
 

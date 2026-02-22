@@ -32,10 +32,10 @@ namespace WarehouseTracker.Application.Repositories
             .ToListAsync();
         }
 
-        public async Task<List<Event>> GetByShiftAsync(int shiftAssignmentId)
+        public async Task<List<Event>> GetByWorkDayAsync(int workDayId)
         {
             return await _dbContext.Events
-                .Where(e => e.TaskAssignmentId == shiftAssignmentId)
+                .Where(e => e.WorkDayId == workDayId)
                 .OrderBy(e => e.TimestampUtc)
                 .ToListAsync();
         }

@@ -10,9 +10,10 @@ namespace WarehouseTracker.Application.Repositories
     public interface ITaskAssignmentRepository
     {
         Task AddAsync(TaskAssignment taskAssignment);
-        Task<TaskAssignment?> GeByIdAsync(int shiftId);
-        Task <TaskAssignment?>GetActiveShiftAsync(string colleagueId, DateTimeOffset timeStamp);
-        Task<List<TaskAssignment>> GetShiftsAsync(DateTimeOffset now);
+        Task<TaskAssignment?> GetByIdAsync(int taskId);
+        Task<TaskAssignment?> GetActiveTaskAsync(string colleagueId);
+        Task<List<TaskAssignment>> GetTasksAsync(DateTimeOffset now);
+        Task UpdateAsync(TaskAssignment taskAssignment);
         Task SaveChangesAsync();
     }
 }

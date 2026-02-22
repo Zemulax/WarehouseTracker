@@ -1,9 +1,12 @@
-﻿namespace WarehouseTracker.Api.Models
+﻿using WarehouseTracker.Domain;
+
+namespace WarehouseTracker.Api.Models
 {
     public class TaskAssignmentDto
     {
+        
         public string ColleagueId { get; set; } = null!;
-        public DateTimeOffset ShiftStart { get; set; }
-        public DateTimeOffset ShiftEnd { get; set; }
+        public string DepartmentCode { get; set; } = null!; // pick, pack, etc
+        
     } 
 }

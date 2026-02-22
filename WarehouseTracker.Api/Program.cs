@@ -34,6 +34,7 @@ namespace WarehouseTracker.Api
             builder.Services.AddScoped<IEventRepository, EventRepository>();
             builder.Services.AddScoped<IActivitySessionRepository, ActivitySessionRepository>();
             builder.Services.AddScoped<IBreakRuleRepository, BreakRuleRepository>();
+            builder.Services.AddScoped<IWorkDayRepository, WorkDayRepository>();
 
             builder.Services.AddScoped<IColleagueService, ColleagueService>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
@@ -42,7 +43,7 @@ namespace WarehouseTracker.Api
             builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
             builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
             builder.Services.AddScoped<IBreakRuleService, BreakRuleService>();
-
+            builder.Services.AddScoped<IWorkDayService, WorkDayService>();
             builder.Services.AddScoped<IActivitySessionBuilder, ActivitySessionBuilder>();
             builder.Services.AddScoped<IActivitySessionRebuilder, ActivitySessionRebuilder>();
 

@@ -10,7 +10,8 @@ namespace WarehouseTracker.Application.Services
     public interface ITaskAssignmentService
     {
         Task CreateAsync(TaskAssignment assignment);
-        Task<TaskAssignment?> GetShiftActiveShiftAsync(string colleagueId, DateTimeOffset timeStamp);
-        Task<List<TaskAssignment>> GetShiftsAsync(DateTimeOffset now);
+        Task<TaskAssignment?> GetActiveTaskAsync(string colleagueId);
+        Task EndTaskAsync(TaskAssignment taskAssignment);
+
     }
 }

@@ -32,8 +32,7 @@ namespace WarehouseTracker.Api.Controllers
                 ColleagueId = request.ColleagueId,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                Role = request.Role,
-                IsActive = request.IsActive,
+                Role = request.Role
             };
 
             await _colleagueService.RegisterColleagueAsync(colleague);
@@ -53,7 +52,6 @@ namespace WarehouseTracker.Api.Controllers
                 FirstName = colleagueDomain.FirstName,
                 LastName = colleagueDomain.LastName,
                 Role = colleagueDomain.Role,
-                IsActive = colleagueDomain.IsActive,
 
             };
         }
@@ -68,7 +66,6 @@ namespace WarehouseTracker.Api.Controllers
                 FirstName=c.FirstName,
                 LastName=c.LastName,
                 Role=c.Role,
-                IsActive=c.IsActive,
             }).ToList();
         }
     }

@@ -40,37 +40,37 @@ public class BreakSchedulerService : BackgroundService
         using var scope = _scopeFactory.CreateScope();
 
         var breakService = scope.ServiceProvider.GetRequiredService<IBreakRuleService>();
-        var shiftService = scope.ServiceProvider.GetRequiredService<ITaskAssignmentService>();
+        var workDayService = scope.ServiceProvider.GetRequiredService<IWorkDayService>();
         var eventService = scope.ServiceProvider.GetRequiredService<IEventService>();
 
         var now = DateTimeOffset.UtcNow;
-        var activeShifts = await shiftService.GetShiftsAsync(now);
+        var activeWorkDays = await workDayService.GetAllActiveWorkDaysAsync();
         var breakRules = await breakService.GetAllBreakRules();
 
-        foreach (var shift in activeShifts)
+        foreach (var workDay in activeWorkDays)
         {
             foreach (var breakRule in breakRules)
             {
                 // ✅ Fetch INSIDE the inner loop so it's always fresh
-                var existingEvents = await eventService.GetEventsByShiftAsync(shift.Id);
+                var existingEvents = await eventService.GetEventsByWorkDayAsync(workDay.Id);
 
-                var shiftDate = shift.ShiftStart.Date;
+                var shiftDate = workDay.WorkDayStart.Date;
                 var breakStart = new DateTimeOffset(shiftDate.Year, shiftDate.Month, shiftDate.Day,
                     breakRule.BreakStart.Hour, breakRule.BreakStart.Minute, 0, TimeSpan.Zero);
                 var breakEnd = new DateTimeOffset(shiftDate.Year, shiftDate.Month, shiftDate.Day,
                     breakRule.BreakEnd.Hour, breakRule.BreakEnd.Minute, 0, TimeSpan.Zero);
 
-                if (breakStart < shift.ShiftStart) breakStart = breakStart.AddDays(1);
-                if (breakEnd < shift.ShiftStart) breakEnd = breakEnd.AddDays(1);
+                if (breakStart < workDay.WorkDayStart) breakStart = breakStart.AddDays(1);
+                if (breakEnd < workDay.WorkDayStart) breakEnd = breakEnd.AddDays(1);
 
                 var breakStartExists = existingEvents.Any(e =>
                     e.EventType == EventTypes.BreakStarted &&
                     Math.Abs((e.TimestampUtc - breakStart).TotalMinutes) < 1);
 
-                // ✅ Tighten window to less than 30s (your tick interval) to avoid double-fire
+               
                 if (!breakStartExists && Math.Abs((now - breakStart).TotalSeconds) < 29)
                 {
-                    await eventService.CreateBreakStartedEventAsync(shift);
+                    await eventService.CreateBreakStartedEventAsync(workDay);
                 }
 
                 var breakEndExists = existingEvents.Any(e =>
@@ -79,7 +79,7 @@ public class BreakSchedulerService : BackgroundService
 
                 if (!breakEndExists && Math.Abs((now - breakEnd).TotalSeconds) < 29)
                 {
-                    await eventService.CreateBreakEndedEventAsync(shift);
+                    await eventService.CreateBreakEndedEventAsync(workDay);
                 }
             }
         }

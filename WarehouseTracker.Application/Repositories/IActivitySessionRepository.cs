@@ -10,7 +10,7 @@ namespace WarehouseTracker.Application.Repositories
     public interface IActivitySessionRepository
     {
         Task<List<ActivitySession>> GetByShiftAsync(int? shiftId, string? colleagueId);
-        Task DeleteShiftAsync(int shiftId);
+        Task DeleteByWorkDayAsync(int shiftId);
         Task AddRangeAsync(List<ActivitySession> sessions);
         Task SaveChangesAsync();
     }

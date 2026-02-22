@@ -10,8 +10,8 @@ namespace WarehouseTracker.Domain
     {
         public int Id { get; set; }
         public string ColleagueId { get; set; } = null!;
-        public int?  DepartmentId { get; set; }
-        public int TaskAssignmentId { get; set; }
+        public string? DepartmentCode { get; set; } = null!; // pick, pack, etc
+        public int WorkDayId { get; set; }
         public string SessionType { get; set; } = null!;
         public DateTimeOffset SessionStart { get; set; }
         public DateTimeOffset SessionEnd { get; set; }

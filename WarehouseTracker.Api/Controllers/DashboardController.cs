@@ -27,7 +27,7 @@ namespace WarehouseTracker.Api.Controllers
             .Select(s => new
             {
                 s.ColleagueId,
-                s.DepartmentId,
+                s.WorkDayId,
                 s.SessionType,
                 s.SessionStart,
                 s.SessionEnd

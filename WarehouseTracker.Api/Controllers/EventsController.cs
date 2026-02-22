@@ -20,16 +20,24 @@ namespace WarehouseTracker.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEvent(EventDto request)
         {
-            var eventDomain = new Event
+            try
             {
-                ColleagueId = request.ColleagueId,
-                DepartmentCode = request.DepartmentCode,
-                EventType = request.EventType,
-                TimestampUtc = request.TimestampUtc,
+                var eventDomain = new Event
+                {
+                    ColleagueId = request.ColleagueId,
+                    DepartmentCode = request.DepartmentCode,
+                    EventType = request.EventType,
+                    TimestampUtc = request.TimestampUtc,
 
-            };
-            await _eventService.CreateEventAsync(eventDomain);
-            return Ok();
+                };
+                await _eventService.CreateEventAsync(eventDomain);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (not implemented here)
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

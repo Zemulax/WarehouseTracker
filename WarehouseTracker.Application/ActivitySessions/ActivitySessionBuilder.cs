@@ -4,7 +4,7 @@ using WarehouseTracker.Domain;
 
 public class ActivitySessionBuilder : IActivitySessionBuilder
 {
-    public List<ActivitySession> Build(TaskAssignment task, IReadOnlyList<Event> events)
+    public List<ActivitySession> Build(WorkDay workDay, IReadOnlyList<Event> events)
     {
         var sessions = new List<ActivitySession>();
 
@@ -28,8 +28,8 @@ public class ActivitySessionBuilder : IActivitySessionBuilder
                     openSession = new ActivitySession
                     {
                         ColleagueId = evt.ColleagueId,
-                        TaskAssignmentId = task.Id,
-                        DepartmentId = evt.Id,
+                        WorkDayId = workDay.Id,
+                        DepartmentCode = evt.DepartmentCode,
                         SessionType = "Active",
                         SessionStart = evt.TimestampUtc
                     };
@@ -40,8 +40,8 @@ public class ActivitySessionBuilder : IActivitySessionBuilder
                     openSession = new ActivitySession
                     {
                         ColleagueId = evt.ColleagueId,
-                        TaskAssignmentId = task.Id,
-                        DepartmentId = null,
+                        WorkDayId = workDay.Id,
+                        DepartmentCode = null, // Breaks don't have a department
                         SessionType = "Break",
                         SessionStart = evt.TimestampUtc
                     };
@@ -49,12 +49,12 @@ public class ActivitySessionBuilder : IActivitySessionBuilder
 
                 case EventTypes.BreakEnded:
                     CloseIfOpen(evt.TimestampUtc, ref openSession, sessions);
-                    var lastDept = sessions.LastOrDefault(s => s.SessionType == "Active")?.DepartmentId;
+                    var lastDeptCode = sessions.LastOrDefault(s => s.SessionType == "Active")?.DepartmentCode;
                     openSession = new ActivitySession
                     {
                         ColleagueId = evt.ColleagueId,
-                        TaskAssignmentId = task.Id,
-                        DepartmentId = lastDept,
+                        WorkDayId = workDay.Id,
+                        DepartmentCode = lastDeptCode,
                         SessionType = "Active",
                         SessionStart = evt.TimestampUtc
                     };
@@ -71,7 +71,7 @@ public class ActivitySessionBuilder : IActivitySessionBuilder
         if (openSession != null)
         {
             // For ongoing sessions, set SessionEnd to now (or task end if you prefer)
-            openSession.SessionEnd = DateTimeOffset.UtcNow; // or task.ShiftEnd
+            openSession.SessionEnd = DateTimeOffset.UtcNow; // or task.TaskEnd
             sessions.Add(openSession);
         }
 

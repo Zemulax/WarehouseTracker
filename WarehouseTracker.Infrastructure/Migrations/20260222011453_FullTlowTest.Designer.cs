@@ -12,8 +12,8 @@ using WarehouseTracker.Infrastructure;
 namespace WarehouseTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(WarehouseTrackerDbContext))]
-    [Migration("20260219230528_Testing")]
-    partial class Testing
+    [Migration("20260222011453_FullTlowTest")]
+    partial class FullTlowTest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,8 +37,8 @@ namespace WarehouseTracker.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
+                    b.Property<string>("DepartmentCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SessionEnd")
                         .HasColumnType("datetimeoffset");
@@ -50,7 +50,7 @@ namespace WarehouseTracker.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ShiftAssignmentId")
+                    b.Property<int>("WorkDayId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -82,22 +82,15 @@ namespace WarehouseTracker.Infrastructure.Migrations
 
             modelBuilder.Entity("WarehouseTracker.Domain.Colleague", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("ColleagueId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -107,7 +100,7 @@ namespace WarehouseTracker.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ColleagueId");
 
                     b.ToTable("Colleagues");
                 });
@@ -120,7 +113,7 @@ namespace WarehouseTracker.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DeparmentCode")
+                    b.Property<string>("DepartmentCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -155,9 +148,6 @@ namespace WarehouseTracker.Infrastructure.Migrations
                     b.Property<int>("EventType")
                         .HasColumnType("int");
 
-                    b.Property<int>("ShiftAssignmentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Source")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -165,12 +155,15 @@ namespace WarehouseTracker.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("TimestampUtc")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<int>("WorkDayId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("WarehouseTracker.Domain.ShiftAssignment", b =>
+            modelBuilder.Entity("WarehouseTracker.Domain.TaskAssignment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -182,15 +175,84 @@ namespace WarehouseTracker.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("ShiftEnd")
+                    b.Property<string>("DepartmentCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("TaskEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTimeOffset>("ShiftStart")
+                    b.Property<DateTimeOffset>("TaskStart")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("WorkDayId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkDayId");
+
+                    b.ToTable("TaskAssignments");
+                });
+
+            modelBuilder.Entity("WarehouseTracker.Domain.WorkDay", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ColleagueId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("WorkDayEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("WorkDayStart")
                         .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShiftAssignments");
+                    b.HasIndex("ColleagueId");
+
+                    b.ToTable("WorkDays");
+                });
+
+            modelBuilder.Entity("WarehouseTracker.Domain.TaskAssignment", b =>
+                {
+                    b.HasOne("WarehouseTracker.Domain.WorkDay", "WorkDay")
+                        .WithMany("TaskAssignments")
+                        .HasForeignKey("WorkDayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WorkDay");
+                });
+
+            modelBuilder.Entity("WarehouseTracker.Domain.WorkDay", b =>
+                {
+                    b.HasOne("WarehouseTracker.Domain.Colleague", "Colleague")
+                        .WithMany()
+                        .HasForeignKey("ColleagueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Colleague");
+                });
+
+            modelBuilder.Entity("WarehouseTracker.Domain.WorkDay", b =>
+                {
+                    b.Navigation("TaskAssignments");
                 });
 #pragma warning restore 612, 618
         }

@@ -16,22 +16,22 @@ namespace WarehouseTracker.Application.Services
         private readonly IEventRepository _eventRepository;
         private readonly IColleagueService _colleagueService;
         private readonly IDepartmentService _departmentService;
-        private readonly ITaskAssignmentService _taskService;
         private readonly IActivitySessionRebuilder _activitySessionRebuilder;
-        
+        private readonly IWorkDayService _workDayService;
+
 
         public EventService(
             IEventRepository eventRepository,
             IColleagueService colleagueService,
             IDepartmentService departmentService,
-            ITaskAssignmentService taskService,
-            IActivitySessionRebuilder activitySessionRebuilder)
+            IActivitySessionRebuilder activitySessionRebuilder, 
+            IWorkDayService wokDayService)
         {
             _eventRepository = eventRepository;
             _colleagueService = colleagueService;
             _departmentService = departmentService;
-            _taskService = taskService;
             _activitySessionRebuilder = activitySessionRebuilder;
+            _workDayService = wokDayService;
         }
 
         public async Task CreateEventAsync(Event request)
@@ -42,10 +42,10 @@ namespace WarehouseTracker.Application.Services
                 throw new Exception("Colleague not found");
 
             // 2. Resolve shift
-            var shift = await _taskService.GetShiftActiveShiftAsync(colleague.ColleagueId, request.TimestampUtc );
-            Console.WriteLine(shift);
-            if (shift == null)
-                throw new Exception("No active shift");
+            var workDay = await _workDayService.GetActiveWorkDay(colleague.ColleagueId);
+            
+            if (workDay == null)
+                throw new Exception("No active workday found");
 
             // 3. Resolve department if provided
             string? departmentCode = null;
@@ -63,7 +63,7 @@ namespace WarehouseTracker.Application.Services
             {
                 ColleagueId = colleague.ColleagueId,
                 DepartmentCode = departmentCode,
-                TaskAssignmentId = shift.Id,
+                WorkDayId = workDay.Id,
                 EventType = request.EventType,
                 TimestampUtc = request.TimestampUtc,
                 Source = "User"
@@ -72,16 +72,16 @@ namespace WarehouseTracker.Application.Services
             await _eventRepository.AddAsync(evt);
             await _eventRepository.SaveChangesAsync();
             // 5. Rebuild sessions
-            await _activitySessionRebuilder.RebuildForAsync(shift.Id);
+            await _activitySessionRebuilder.RebuildForAsync(workDay.Id);
 
         }
 
-        public async Task CreateBreakStartedEventAsync(TaskAssignment task)
+        public async Task CreateBreakStartedEventAsync(WorkDay workDay)
         {
             var evt = new Event
             {
-                ColleagueId = task.ColleagueId,
-                TaskAssignmentId = task.Id,
+                ColleagueId = workDay.ColleagueId,
+                WorkDayId = workDay.Id,
                 EventType = EventTypes.BreakStarted,
                 TimestampUtc = DateTimeOffset.UtcNow,
                 
@@ -89,26 +89,26 @@ namespace WarehouseTracker.Application.Services
             };
             await _eventRepository.AddAsync(evt);
             await _eventRepository.SaveChangesAsync();
-            await _activitySessionRebuilder.RebuildForAsync(task.Id);
+            await _activitySessionRebuilder.RebuildForAsync(workDay.Id);
         }
 
-        public async Task CreateBreakEndedEventAsync(TaskAssignment task)
+        public async Task CreateBreakEndedEventAsync(WorkDay workDay)
         {
             var evt = new Event
             {
-                ColleagueId = task.ColleagueId,
-                TaskAssignmentId = task.Id,
+                ColleagueId = workDay.ColleagueId,
+                WorkDayId = workDay.Id,
                 EventType = EventTypes.BreakEnded,
                 TimestampUtc = DateTimeOffset.UtcNow, // ✅ Fixed: Was DateTime.Now
                 Source = "System"
             };
             await _eventRepository.AddAsync(evt);
             await _eventRepository.SaveChangesAsync();
-            await _activitySessionRebuilder.RebuildForAsync(task.Id);
+            await _activitySessionRebuilder.RebuildForAsync(workDay.Id);
         }
-        public async Task<List<Event>> GetEventsByShiftAsync(int shiftAssignmentId)
+        public async Task<List<Event>> GetEventsByWorkDayAsync(int workDayId)
         {
-            return await _eventRepository.GetByShiftAsync(shiftAssignmentId);
+            return await _eventRepository.GetByWorkDayAsync(workDayId);
         }
     }
 }
